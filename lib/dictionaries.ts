@@ -1,0 +1,323 @@
+import type { Locale } from "./i18n";
+
+/**
+ * Interface strings. French is the reference (the site was written in French first); English
+ * mirrors every key. Content (projects, experience, profile…) is localized in data/.
+ * Non-breaking spaces before ":" "?" "!" and inside « » are part of French typography.
+ */
+const fr = {
+  meta: {
+    titleSuffix: "développeur fullstack web et mobile",
+    projectsTitle: "Projets",
+    projectsDescription: "Tous les projets web, mobile et API réalisés par Claude Tsiangana, développeur fullstack.",
+    labTitle: "Lab",
+    labDescription:
+      "Notes techniques sur mes projets personnels : le problème, la solution mise en place et ce qu'elle change.",
+    notFoundTitle: "Page introuvable",
+    projectNoteAlt: "Fiche projet de Claude Tsiangana",
+  },
+  a11y: {
+    skipToContent: "Aller au contenu",
+    home: "Accueil",
+    mainNav: "Navigation principale",
+    openMenu: "Ouvrir le menu",
+    newTab: "nouvel onglet",
+    profiles: "Profils",
+    backToTop: "Revenir en haut de la page",
+    backToTopShort: "Revenir en haut",
+    portrait: "Portrait de",
+    inBrief: "En bref",
+    currentRole: "(poste actuel)",
+    downloadCvPdf: "Télécharger mon CV (PDF)",
+    language: "Langue",
+    switchTo: "Voir le site en français",
+  },
+  nav: {
+    projets: "Projets",
+    experience: "Expérience",
+    competences: "Compétences",
+    lab: "Lab",
+    contact: "Contact",
+  },
+  hero: {
+    downloadCv: "Télécharger mon CV",
+  },
+  booking: {
+    trigger: "Planifier un échange",
+    title: "Planifier un échange",
+    description: "Choisissez le type d'échange et un créneau horaire, la confirmation arrive par email.",
+    iframeTitle: "Agenda de prise de rendez-vous Calendly",
+    back: "Revenir aux types d'échange",
+  },
+  activity: {
+    title: "Activité de code",
+    live: "En direct",
+    offline: "Hors ligne",
+    lastActivity: "Dernière activité",
+    contributions: "contributions",
+    contribution: "contribution",
+    overYear: "sur 12 mois,",
+    activeDays: "jours actifs, sur",
+    and: "et",
+    privateNoteBefore: "La majorité de ces contributions concerne des projets privés sur",
+    privateNoteAfter: ". Actualisé chaque minute.",
+    less: "Moins",
+    more: "Plus",
+    on: "le",
+    days: ["lun.", "", "mer.", "", "ven.", "", ""],
+    ariaSummary: (total: string, days: number) =>
+      `${total} contributions sur les 12 derniers mois, ${days} jours actifs.`,
+  },
+  home: {
+    projectsIntro:
+      "Quatre produits en production, du besoin métier jusqu'au déploiement. Les captures viennent des applications réelles.",
+    experienceIntro: "Startup, agence, association et fintech : en équipe Scrum comme en autonomie complète.",
+    skillsIntro:
+      "Regroupées par couche, du navigateur jusqu'au serveur, et appuyées par des certifications vérifiables.",
+    readProject: "Lire la fiche du projet",
+    open: "Ouvrir",
+    seeAllProjects: (n: number) => `Voir les ${n} projets`,
+    seeAllProjectsAfter: ", dont une app bancaire en Open Banking, une boutique en ligne et deux API documentées.",
+  },
+  experience: {
+    seeProject: "Voir la fiche du projet",
+  },
+  skills: {
+    certified: "certifié",
+    certifiedTitle: (title: string, issuer: string) => `Certification ${title} (${issuer}), voir la vérification`,
+    certifiedAria: (title: string, issuer: string) => `Certification ${title}, vérifier sur ${issuer}`,
+    technologies: "Technologies : ",
+  },
+  certifications: {
+    title: "Certifications",
+    intro: (n: number, issuer: string) =>
+      `${n} certifications ${issuer}. Cliquez sur un certificat pour l'agrandir, ou sur « vérifier » pour sa page de vérification.`,
+    enlarge: (title: string) => `Voir le certificat ${title} en grand`,
+    certificate: (title: string, issuer: string) => `Certificat ${title} délivré par ${issuer}`,
+    dialogTitle: (title: string) => `Certification ${title}`,
+    issuedBy: (issuer: string) => `Délivrée par ${issuer}.`,
+    verifyOn: (issuer: string) => `Vérifier sur ${issuer}`,
+    verifyShort: (issuer: string) => `${issuer}, vérifier`,
+    verifyAria: (title: string, issuer: string) => `Vérifier la certification ${title} sur ${issuer}`,
+  },
+  contact: {
+    title: "Contact",
+    heading: "Un projet ensemble ?",
+    body: "Je suis ouvert aux nouvelles opportunités, sur site, en hybride ou en télétravail, partout en France et prêt à déménager.",
+    bodyCta: "Écrivez-moi ou réservez un créneau : on en parle.",
+    write: "Me contacter",
+    mailSubject: "Opportunité CDI, développeur fullstack",
+  },
+  projects: {
+    title: "Projets",
+    intro: (n: number) =>
+      `Les ${n} projets sur lesquels j'ai travaillé, en entreprise, en freelance ou de mon côté. Chaque fiche explique le besoin, ce que j'ai construit et avec quels outils.`,
+    privateBefore: "Le code de la plupart de ces projets est privé, sur",
+    privateAfter: ". Les captures et les liens en ligne montrent le résultat, et je peux détailler l'architecture en entretien.",
+    filterAria: "Filtrer les projets par plateforme",
+    filterAll: "Tous",
+    shown: (n: number) => `${n} projets affichés`,
+    sector: "Secteur",
+    platforms: "Plateformes",
+    setting: "Cadre",
+    period: "Période",
+    role: "Mon rôle",
+  },
+  project: {
+    back: "Tous les projets",
+    about: "Le projet",
+    built: "Ce que j'ai construit",
+    technologies: "Technologies",
+    screenshots: "Captures d'écran",
+    labNote: "Note technique dans le Lab : ",
+    otherProjects: "Autres projets",
+    previous: "Projet précédent",
+    next: "Projet suivant",
+    open: "Ouvrir",
+    diagram: (center: string, detail: string, link: string, node: string, nodeDetail: string) =>
+      `Schéma : ${center} (${detail}) reliée par ${link} à plusieurs ${node.toLowerCase()}s (${nodeDetail}).`,
+  },
+  lab: {
+    title: "Lab",
+    introBefore:
+      "Des notes techniques sur mes projets personnels. Chaque note isole un problème précis : le contexte, ce que j'ai mis en place et ce que ça change. Les projets complets sont dans la page",
+    introLink: "Projets",
+    status: "Statut",
+    technologies: "Technologies",
+    platform: "La plateforme",
+    context: "Le contexte",
+    built: "Ce que j'ai mis en place",
+    onServer: "Sur le VPS, la commande :",
+    outcomes: "Ce que ça change",
+  },
+  notFound: {
+    heading: "Cette page n'existe pas.",
+    body: "Ce lien ne mène à aucune page du site (erreur 404). Les projets et le CV sont accessibles depuis l'accueil.",
+    home: "Retour à l'accueil",
+    projects: "Voir les projets",
+  },
+  relativeTime: {
+    justNow: "à l'instant",
+    on: "le",
+  },
+};
+
+export type Dictionary = typeof fr;
+
+const en: Dictionary = {
+  meta: {
+    titleSuffix: "fullstack web and mobile developer",
+    projectsTitle: "Projects",
+    projectsDescription: "All the web, mobile and API projects built by Claude Tsiangana, fullstack developer.",
+    labTitle: "Lab",
+    labDescription: "Technical notes on my personal projects: the problem, the solution I built and what it changes.",
+    notFoundTitle: "Page not found",
+    projectNoteAlt: "Project page by Claude Tsiangana",
+  },
+  a11y: {
+    skipToContent: "Skip to content",
+    home: "Home",
+    mainNav: "Main navigation",
+    openMenu: "Open the menu",
+    newTab: "new tab",
+    profiles: "Profiles",
+    backToTop: "Back to the top of the page",
+    backToTopShort: "Back to top",
+    portrait: "Portrait of",
+    inBrief: "At a glance",
+    currentRole: "(current role)",
+    downloadCvPdf: "Download my resume (PDF)",
+    language: "Language",
+    switchTo: "View the site in English",
+  },
+  nav: {
+    projets: "Projects",
+    experience: "Experience",
+    competences: "Skills",
+    lab: "Lab",
+    contact: "Contact",
+  },
+  hero: {
+    downloadCv: "Download my resume",
+  },
+  booking: {
+    trigger: "Schedule a call",
+    title: "Schedule a call",
+    description: "Pick a time slot, the confirmation arrives by email.",
+    iframeTitle: "Calendly booking calendar",
+    back: "Back to meeting types",
+  },
+  activity: {
+    title: "Code activity",
+    live: "Live",
+    offline: "Offline",
+    lastActivity: "Last activity",
+    contributions: "contributions",
+    contribution: "contribution",
+    overYear: "over 12 months,",
+    activeDays: "active days, on",
+    and: "and",
+    privateNoteBefore: "Most of these contributions are to private projects on",
+    privateNoteAfter: ". Updated every minute.",
+    less: "Less",
+    more: "More",
+    on: "on",
+    days: ["Mon", "", "Wed", "", "Fri", "", ""],
+    ariaSummary: (total: string, days: number) => `${total} contributions over the last 12 months, ${days} active days.`,
+  },
+  home: {
+    projectsIntro:
+      "Four products in production, from business need to deployment. The screenshots come from the real applications.",
+    experienceIntro: "Startup, agency, non-profit and fintech: in Scrum teams as well as fully on my own.",
+    skillsIntro: "Grouped by layer, from the browser to the server, and backed by verifiable certifications.",
+    readProject: "Read the project page",
+    open: "Open",
+    seeAllProjects: (n: number) => `See all ${n} projects`,
+    seeAllProjectsAfter: ", including an Open Banking app, an online store and two documented APIs.",
+  },
+  experience: {
+    seeProject: "See the project page for",
+  },
+  skills: {
+    certified: "certified",
+    certifiedTitle: (title: string, issuer: string) => `${title} certification (${issuer}), see the verification`,
+    certifiedAria: (title: string, issuer: string) => `${title} certification, verify on ${issuer}`,
+    technologies: "Technologies: ",
+  },
+  certifications: {
+    title: "Certifications",
+    intro: (n: number, issuer: string) =>
+      `${n} ${issuer} certifications. Click a certificate to enlarge it, or "verify" for its verification page.`,
+    enlarge: (title: string) => `View the ${title} certificate full size`,
+    certificate: (title: string, issuer: string) => `${title} certificate issued by ${issuer}`,
+    dialogTitle: (title: string) => `${title} certification`,
+    issuedBy: (issuer: string) => `Issued by ${issuer}.`,
+    verifyOn: (issuer: string) => `Verify on ${issuer}`,
+    verifyShort: (issuer: string) => `${issuer}, verify`,
+    verifyAria: (title: string, issuer: string) => `Verify the ${title} certification on ${issuer}`,
+  },
+  contact: {
+    title: "Contact",
+    heading: "Working together?",
+    body: "I'm open to new opportunities, on site, hybrid or remote, anywhere in France and willing to relocate.",
+    bodyCta: "Write to me or book a slot: let's talk.",
+    write: "Contact me",
+    mailSubject: "Permanent role, fullstack developer",
+  },
+  projects: {
+    title: "Projects",
+    intro: (n: number) =>
+      `The ${n} projects I have worked on, at companies, as a freelancer or on my own. Each page explains the need, what I built and with which tools.`,
+    privateBefore: "The code of most of these projects is private, on",
+    privateAfter: ". The screenshots and live links show the result, and I can walk through the architecture in an interview.",
+    filterAria: "Filter projects by platform",
+    filterAll: "All",
+    shown: (n: number) => `${n} projects shown`,
+    sector: "Sector",
+    platforms: "Platforms",
+    setting: "Setting",
+    period: "Period",
+    role: "My role",
+  },
+  project: {
+    back: "All projects",
+    about: "The project",
+    built: "What I built",
+    technologies: "Technologies",
+    screenshots: "Screenshots",
+    labNote: "Technical note in the Lab: ",
+    otherProjects: "Other projects",
+    previous: "Previous project",
+    next: "Next project",
+    open: "Open",
+    diagram: (center: string, detail: string, link: string, node: string, nodeDetail: string) =>
+      `Diagram: ${center} (${detail}) linked through ${link} to several ${node.toLowerCase()}s (${nodeDetail}).`,
+  },
+  lab: {
+    title: "Lab",
+    introBefore:
+      "Technical notes on my personal projects. Each note isolates one specific problem: the context, what I built and what it changes. Complete projects are on the",
+    introLink: "Projects page",
+    status: "Status",
+    technologies: "Technologies",
+    platform: "The platform",
+    context: "Context",
+    built: "What I built",
+    onServer: "On the VPS, the command:",
+    outcomes: "What it changes",
+  },
+  notFound: {
+    heading: "This page does not exist.",
+    body: "This link does not lead to any page of the site (404 error). The projects and the resume are available from the home page.",
+    home: "Back to home",
+    projects: "See the projects",
+  },
+  relativeTime: {
+    justNow: "just now",
+    on: "on",
+  },
+};
+
+const dictionaries: Record<Locale, Dictionary> = { fr, en };
+
+export const getDictionary = (lang: Locale): Dictionary => dictionaries[lang];

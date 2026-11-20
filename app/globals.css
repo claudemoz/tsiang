@@ -1,0 +1,309 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Dark mode follows the system preference, like the rest of the site (no `.dark` class). */
+@custom-variant dark (@media (prefers-color-scheme: dark));
+
+/*
+ * One palette, shadcn naming. Petrol `primary` = anything clickable, amber `signal` = what is current,
+ * deep petrol `region` = the contact band. shadcn components read the same tokens.
+ */
+:root {
+  --background: #f3f6f6;
+  --foreground: #0f1d21;
+  --card: #ffffff;
+  --card-foreground: #0f1d21;
+  --popover: #ffffff;
+  --popover-foreground: #0f1d21;
+  --primary: #0e6377;
+  --primary-foreground: #ffffff;
+  --secondary: #e0eef0;
+  --secondary-foreground: #0d4553;
+  --muted: #e7eded;
+  --muted-foreground: #52646a;
+  --accent: #e0eef0;
+  --accent-foreground: #0d4553;
+  --destructive: #b42318;
+  --border: #d5dfe1;
+  --input: #d5dfe1;
+  --ring: #0e6377;
+  --radius: 0.5rem;
+
+  --primary-soft: #e0eef0;
+  --device: #0f1d21;
+  --region: #0d4553;
+  --on-region: #f2f8f9;
+  --on-region-muted: #a9cdd5;
+  --signal: #9a6212;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0b1517;
+    --foreground: #e6eef0;
+    --card: #102024;
+    --card-foreground: #e6eef0;
+    --popover: #102024;
+    --popover-foreground: #e6eef0;
+    --primary: #5fc1d3;
+    --primary-foreground: #0b1517;
+    --secondary: #12323a;
+    --secondary-foreground: #e6eef0;
+    --muted: #14262a;
+    --muted-foreground: #93a7ad;
+    --accent: #12323a;
+    --accent-foreground: #e6eef0;
+    --destructive: #f97066;
+    --border: #1f3439;
+    --input: #1f3439;
+    --ring: #5fc1d3;
+
+    --primary-soft: #12323a;
+    --device: #050b0c;
+    --region: #0f3a44;
+    --on-region: #eaf6f8;
+    --on-region-muted: #9fc9d1;
+    --signal: #f0b54a;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary-soft: var(--primary-soft);
+  --color-device: var(--device);
+  --color-signal: var(--signal);
+  --color-region: var(--region);
+  --color-on-region: var(--on-region);
+  --color-on-region-muted: var(--on-region-muted);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 3);
+  --radius-4xl: calc(var(--radius) * 4);
+
+  /* Small type steps used across the UI (see DESIGN.md typography). */
+  --text-brand: 17px;
+  --text-caption: 13px;
+  --text-micro: 11px;
+  --font-sans: var(--font-instrument);
+  --font-display: var(--font-space);
+  --font-heading: var(--font-space);
+  --font-hero: var(--font-space);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  font-family: var(--font-instrument), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  scrollbar-color: var(--border) var(--background);
+  caret-color: var(--primary);
+}
+
+::selection {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.bg-region :focus-visible {
+  outline-color: var(--on-region);
+}
+
+/* Header: transparent over the top of the page, solid once the page scrolls (CSS only).
+   Browsers without scroll-driven animations keep the solid header. */
+@supports (animation-timeline: scroll()) {
+  .site-header {
+    animation: header-solid linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 48px;
+  }
+}
+@keyframes header-solid {
+  from {
+    background-color: transparent;
+    border-bottom-color: transparent;
+    backdrop-filter: none;
+  }
+}
+
+/* Live code activity (components/live-code-activity.tsx). */
+@keyframes cell-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+/* Five intensity steps, from the empty square to full petrol. */
+.activity-cell,
+.activity-swatch {
+  border-radius: 3px;
+  background: color-mix(in oklab, var(--border) 70%, transparent);
+}
+.activity-cell {
+  aspect-ratio: 1;
+}
+.activity-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+[data-level="1"] { background: color-mix(in oklab, var(--primary) 25%, transparent); }
+[data-level="2"] { background: color-mix(in oklab, var(--primary) 45%, transparent); }
+[data-level="3"] { background: color-mix(in oklab, var(--primary) 70%, transparent); }
+[data-level="4"] { background: var(--primary); }
+/* Older weeks only show on wider screens: 18 weeks on phones, 40 from sm, the full year from lg. */
+.activity-col {
+  aspect-ratio: 1;
+}
+[data-from="sm"],
+[data-from="lg"] {
+  display: none;
+}
+@media (min-width: 40rem) {
+  [data-from="sm"] { display: block; }
+}
+@media (min-width: 64rem) {
+  [data-from="lg"] { display: block; }
+}
+.activity-cell {
+  /* The calendar sweeps in left to right, once, as part of the hero entrance. */
+  animation: cell-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(200ms + var(--w, 0) * 12ms);
+}
+@keyframes cell-new {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  25% {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--signal) 55%, transparent);
+  }
+}
+.activity-cell.is-new {
+  animation: cell-new 1.2s ease-out 2;
+}
+.live-dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--signal);
+}
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: live-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.live-dot.is-offline {
+  background: var(--muted-foreground);
+}
+.live-dot.is-offline::after {
+  animation: none;
+}
+@keyframes live-ping {
+  75%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+@keyframes figure-in {
+  from {
+    color: var(--signal);
+  }
+}
+.live-figure {
+  animation: figure-in 1.6s ease-out;
+}
+
+/* Hero: one orchestrated entrance, nothing else animates on load. */
+@keyframes rise {
+  from {
+    opacity: 0.35;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-in > * {
+  animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.hero-in > *:nth-child(2) { animation-delay: 80ms; }
+.hero-in > *:nth-child(3) { animation-delay: 160ms; }
+.hero-in > *:nth-child(4) { animation-delay: 240ms; }
+.hero-in > *:nth-child(5) { animation-delay: 320ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  /* Tailwind 4 resets buttons to the default cursor: every clickable control shows the hand. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary,
+  label[for],
+  select {
+    cursor: pointer;
+  }
+}

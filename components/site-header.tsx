@@ -1,0 +1,59 @@
+import Link from "next/link";
+import { Suspense } from "react";
+import { navItems } from "@/data/navigation";
+import { getProfile } from "@/data/profile";
+import { getDictionary } from "@/lib/dictionaries";
+import { localePath } from "@/lib/i18n";
+import { getLocale } from "@/lib/locale";
+import { LanguageSwitch, LanguageSwitchFallback } from "./language-switch";
+import { MobileNav } from "./mobile-nav";
+import { Container } from "./primitives";
+import { SiteNav, SiteNavFallback, type NavLink } from "./site-nav";
+
+export async function SiteHeader() {
+  const lang = await getLocale();
+  const profile = getProfile(lang);
+  const t = getDictionary(lang);
+  const other = getDictionary(lang === "fr" ? "en" : "fr");
+  const items: NavLink[] = navItems.map((item) => ({
+    id: item.id,
+    href: localePath(lang, item.path),
+    label: t.nav[item.id],
+  }));
+
+  return (
+    <header className="site-header sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-md">
+      <Container className="flex h-16 items-center justify-between gap-4">
+        <Link href={localePath(lang, "/")} className="rounded-md" aria-label={`${t.a11y.home}, ${profile.name}`}>
+          <span className="flex flex-col leading-tight">
+            <span className="font-display text-brand font-semibold tracking-tight">{profile.name}</span>
+            <span className="hidden text-caption text-muted-foreground sm:block md:hidden lg:block">
+              {profile.role} {profile.tagline}
+            </span>
+          </span>
+        </Link>
+
+        <nav aria-label={t.a11y.mainNav} className="hidden md:block">
+          <Suspense fallback={<SiteNavFallback items={items} />}>
+            <SiteNav items={items} />
+          </Suspense>
+        </nav>
+
+        <div className="flex items-center gap-1">
+          <Suspense
+            fallback={<LanguageSwitchFallback lang={lang} label={other.a11y.switchTo} groupLabel={t.a11y.language} />}
+          >
+            <LanguageSwitch lang={lang} label={other.a11y.switchTo} groupLabel={t.a11y.language} />
+          </Suspense>
+          <MobileNav
+            items={items}
+            name={profile.name}
+            subtitle={`${profile.role} ${profile.tagline}`}
+            cv={profile.cv}
+            labels={{ openMenu: t.a11y.openMenu, mainNav: t.a11y.mainNav, downloadCv: t.hero.downloadCv }}
+          />
+        </div>
+      </Container>
+    </header>
+  );
+}
