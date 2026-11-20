@@ -52,7 +52,7 @@ export async function ExperienceTimeline() {
           {xp.stack.length > 0 ? <StackLine items={xp.stack} className="mt-4" label={t.skills.technologies} /> : null}
           {xp.project ? (
             <p className="mt-4 text-[15px]">
-              <Link href={localePath(lang, `/projets/${xp.project}`)} className={`font-medium ${textLink}`}>
+              <Link href={localePath(lang, `/projets/${xp.project}`)} className={textLink}>
                 {t.experience.seeProject} {getProject(xp.project, lang)?.title}
               </Link>
             </p>

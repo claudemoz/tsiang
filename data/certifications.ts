@@ -1,3 +1,5 @@
+import { imageSrc } from "./media";
+
 /**
  * Certifications (Dyma). Each one is attached to what it proves:
  * `skill` is the exact item in data/skills.ts, `stack` the names used in project stacks.
@@ -18,56 +20,56 @@ const base = "https://dyma.fr/certification/6299c13dc1feb6a539a0084a/";
 export const certifications: Certification[] = [
   {
     title: "Kubernetes",
-    image: { src: "/images/certifications/k8s.webp", width: 1681, height: 1165 },
+    image: imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199526/tsiang.fr/certifications/k8s_din27j.webp", 1681, 1165),
     url: `${base}645e595690ccf96f7c67665c`,
     skill: "Kubernetes, Helm, ArgoCD",
     stack: ["Kubernetes"],
   },
   {
     title: "Golang",
-    image: { src: "/images/certifications/gocertif.webp", width: 1680, height: 1168 },
+    image: imageSrc("/images/certifications/gocertif.webp", 1680, 1168),
     url: `${base}68a857338a8c63e8f2c7c320`,
     skill: "Golang, Gin",
     stack: ["Go", "Golang"],
   },
   {
     title: "GitLab CI/CD",
-    image: { src: "/images/certifications/gitlabcertif.webp", width: 1678, height: 1162 },
+    image: imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199526/tsiang.fr/certifications/gitlabcertif_i0kvl9.webp", 1678, 1162),
     url: `${base}64f5fde853b8f78052334a41`,
     skill: "GitLab CI/CD",
     stack: ["GitLab CI/CD"],
   },
   {
     title: "Node.js",
-    image: { src: "/images/certifications/nodecertif.webp", width: 1676, height: 1164 },
+    image: imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199528/tsiang.fr/certifications/nodecertif_gcqumu.webp", 1676, 1164),
     url: `${base}5c69b1d1606df31e473253d8`,
     skill: "Node.js, NestJS",
     stack: ["Node.js"],
   },
   {
     title: "Java, Spring Boot",
-    image: { src: "/images/certifications/springboot.webp", width: 1683, height: 1167 },
+    image: imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199526/tsiang.fr/certifications/springboot_d2pavp.webp", 1683, 1167),
     url: `${base}64799f7159ebb4f1e99bfb8b`,
     skill: "Spring Boot, Java",
     stack: ["Java", "Spring Boot"],
   },
   {
     title: "React",
-    image: { src: "/images/certifications/reactcertif.webp", width: 1678, height: 1161 },
+    image: imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199527/tsiang.fr/certifications/reactcertif_imkaga.webp", 1678, 1161),
     url: `${base}628e08287436c6ee0c1480b9`,
     skill: "React.js",
     stack: ["React"],
   },
   {
     title: "React Native",
-    image: { src: "/images/certifications/reactnativecertif.webp", width: 1673, height: 1163 },
+    image: imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199527/tsiang.fr/certifications/reactnativecertif_zaeoqx.webp", 1673, 1163),
     url: `${base}65744295e13eacdd4ee601dc`,
     skill: "React Native",
     stack: ["React Native"],
   },
   {
     title: "Vue.js 3",
-    image: { src: "/images/certifications/vuecertif.webp", width: 1687, height: 1162 },
+    image: imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199527/tsiang.fr/certifications/vuecertif_cg8bac.webp", 1687, 1162),
     url: `${base}6213ef21bcbb7ac87308139c`,
     skill: "Vue.js, Nuxt.js",
     stack: ["Vue.js"],

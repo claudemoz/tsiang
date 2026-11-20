@@ -13,7 +13,7 @@ export function CertifiedMark({ cert, lang }: { cert: Certification; lang: Local
       rel="noopener noreferrer"
       title={t.certifiedTitle(cert.title, CERTIFIER)}
       aria-label={t.certifiedAria(cert.title, CERTIFIER)}
-      className="ml-1 inline-flex translate-y-[1px] items-center gap-0.5 rounded-sm text-caption font-medium text-primary hover:underline underline-offset-2"
+      className="ml-1 inline-flex translate-y-[1px] items-center gap-0.5 rounded-sm text-caption font-medium text-primary transition-colors hover:text-foreground"
     >
       <BadgeCheckIcon aria-hidden className="size-3.5" />
       {t.certified}

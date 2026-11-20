@@ -88,7 +88,7 @@ export const buttonStyles = {
 
 /** Links on the deep petrol band (contact section and footer). */
 export const regionLink =
-  "underline decoration-on-region-muted/60 decoration-1 underline-offset-4 transition-colors hover:decoration-on-region hover:decoration-2";
+  "font-medium text-on-region transition-colors hover:text-on-region-muted";
 
 export const textLink =
-  "underline decoration-primary/40 decoration-1 underline-offset-4 transition-colors hover:decoration-primary hover:decoration-2";
+  "font-medium text-primary transition-colors hover:text-foreground";

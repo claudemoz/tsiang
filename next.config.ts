@@ -8,16 +8,17 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Self-contained server in .next/standalone, used by the Dockerfile.
+  output: "standalone",
   experimental: {
     agentFeedback: true,
   },
   cacheComponents: true,
   partialPrefetching: true,
   images: {
-    // AVIF first for browsers that support it, WebP otherwise.
-    formats: ["image/avif", "image/webp"],
-    // Screenshots and the portrait never change between deploys: cache optimized variants for 30 days.
-    minimumCacheTTL: 60 * 60 * 24 * 30,
+    // Images are resized and converted by Cloudinary (data/media.ts), not by the Next server.
+    loader: "custom",
+    loaderFile: "./lib/image-loader.ts",
   },
   async headers() {
     return [

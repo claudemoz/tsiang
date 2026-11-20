@@ -1,5 +1,6 @@
 import type { Locale } from "@/lib/i18n";
 import { profileEn } from "./en";
+import { imageSrc } from "./media";
 
 export const profile = {
   name: "Claude Tsiangana",
@@ -38,7 +39,7 @@ export const profile = {
   gitlab: "https://gitlab.com/claudetsiangana",
   linkedin: "https://www.linkedin.com/in/claude-tsiangana-1164371b3/",
   cv: "/cv/CV-Claude-Tsiangana-Developpeur-Full-stack.pdf",
-  photo: { src: "/images/profile/photo.webp", width: 1008, height: 1066 },
+  photo: imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199573/tsiang.fr/profile/photo_njy3ls.webp", 1008, 1066),
   siteUrl: "https://tsiang.fr",
 } as const;
 

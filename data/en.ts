@@ -107,7 +107,7 @@ export const projectsEn: Record<string, ProjectText> = {
   },
   openpay: {
     domain: "FinTech",
-    client: "OpenPay CG",
+    client: "OPENPAY CG",
     period: "Since 2019",
     role: "Co-founder and fullstack developer at OpenPay CG",
     summary: "Mobile payment aggregator for individuals, merchants and partners in Central Africa.",

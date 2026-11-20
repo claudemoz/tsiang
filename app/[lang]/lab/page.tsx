@@ -58,7 +58,7 @@ function Note({ note, lang, t }: { note: LabNote; lang: Locale; t: Dictionary })
       <aside className="lg:col-span-4">
         <div className="lg:sticky lg:top-24">
           {note.projectSlug ? (
-            <Link href={localePath(lang, `/projets/${note.projectSlug}`)} className={`text-[15px] text-primary ${textLink}`}>
+            <Link href={localePath(lang, `/projets/${note.projectSlug}`)} className={`text-[15px] `}>
               {note.project}
             </Link>
           ) : (

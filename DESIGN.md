@@ -219,7 +219,7 @@ Flat by default; depth only where a physical object is depicted.
 shadcn `Button` / `buttonVariants` (`components/ui/button.tsx`) with a site size `xl` (44px, 15px text) for page actions and `lg` for the header. `outline` uses a `card` background. `buttonStyles.primary` (petrol fill) and `buttonStyles.secondary` (white with line border, border darkens on hover). Labels say what happens: "Télécharger mon CV", "M'écrire", "Lire la fiche du projet", "Ouvrir stoogo.com". Download icon only on CV buttons, external icon only on outbound project links. No arrows appended.
 
 ### Text links
-`textLink`: petrol underline at 40% opacity, full opacity and 2px on hover, 4px offset. Inside the contact band, `regionLink` uses `on-region-muted`.
+`textLink`: petrol text at weight 500, no underline, ink on hover (the weight keeps links visible where petrol is close to the body text). Inside the contact band, `regionLink` is `on-region` text at weight 500, `on-region-muted` on hover. No link is ever underlined, at rest or on hover.
 
 ### Browser frame and phone frame (signature component)
 `components/project-media.tsx`. Web screenshots sit in a plain browser window whose address bar shows the real domain when the project has one (`projectHost`). Mobile screenshots sit in dark phone outlines, up to three side by side on an `accent-soft` panel. `ProjectThumb` gives every project the same 16:10 thumbnail whatever the screenshot orientation.

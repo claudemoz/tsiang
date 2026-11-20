@@ -1,0 +1,20 @@
+# Dépendances et builds locaux : réinstallés et reconstruits dans l'image (binaires Linux).
+node_modules
+.next
+*.tsbuildinfo
+
+# Secrets : jamais dans le contexte de build.
+.env
+.env.*
+!.env.example
+
+# Outils et dépôt
+.git
+.claude
+.vscode
+.idea
+Dockerfile
+.dockerignore
+docker-compose.yml
+npm-debug.log*
+.DS_Store

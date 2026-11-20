@@ -41,7 +41,7 @@ export function ProjectRow({
       </div>
       <div className="md:col-span-7 lg:col-span-5">
         <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-          <Link href={href} className="after:absolute after:inset-0 decoration-2 underline-offset-4 group-hover:underline">
+          <Link href={href} className="after:absolute after:inset-0 transition-colors group-hover:text-primary">
             {project.title}
           </Link>
         </h2>

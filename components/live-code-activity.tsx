@@ -189,7 +189,7 @@ export function LiveCodeActivity({
       <div className="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-caption text-muted-foreground">
         <p className="text-pretty">
           {t.privateNoteBefore}{" "}
-          <a href={GITLAB_URL} target="_blank" rel="noopener noreferrer" className="text-foreground underline decoration-primary/40 underline-offset-4 hover:decoration-primary">
+          <a href={GITLAB_URL} target="_blank" rel="noopener noreferrer" className="text-primary transition-colors hover:text-foreground">
             GitLab
           </a>
           {t.privateNoteAfter}

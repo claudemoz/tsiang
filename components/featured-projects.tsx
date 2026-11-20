@@ -51,7 +51,7 @@ export async function FeaturedProjects() {
             <h3 className="mt-5 font-display text-2xl font-semibold tracking-tight">
               <Link
                 href={href(project.slug)}
-                className="after:absolute after:inset-0 decoration-2 underline-offset-4 group-hover:underline"
+                className="after:absolute after:inset-0 transition-colors group-hover:text-primary"
               >
                 {project.title}
               </Link>
@@ -63,7 +63,7 @@ export async function FeaturedProjects() {
       </div>
 
       <p className="mt-14 text-lg">
-        <Link href={localePath(lang, "/projets")} className={`font-medium ${textLink}`}>
+        <Link href={localePath(lang, "/projets")} className={textLink}>
           {t.home.seeAllProjects(total)}
         </Link>
         <span className="text-muted-foreground">{t.home.seeAllProjectsAfter}</span>

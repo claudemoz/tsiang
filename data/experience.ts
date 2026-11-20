@@ -101,7 +101,7 @@ export const experiences: Experience[] = [
   },
   {
     role: "Co-fondateur et développeur fullstack",
-    company: "OpenPay CG",
+    company: "OPENPAY CG",
     project: "openpay",
     url: "https://openpay.cg",
     period: "Depuis janvier 2019",

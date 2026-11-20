@@ -75,7 +75,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
     jobTitle: p.role,
     url: profile.siteUrl,
     email: `mailto:${p.email}`,
-    image: `${profile.siteUrl}${p.photo.src}`,
+    image: new URL(p.photo.src, profile.siteUrl).href,
     sameAs: [p.gitlab, p.github, p.linkedin],
     knowsAbout: ["React", "React Native", "Angular", "Vue.js", "Node.js", "Go", "Spring Boot", "Docker", "Kubernetes"],
   };

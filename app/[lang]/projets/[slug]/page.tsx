@@ -120,7 +120,7 @@ export default async function ProjectPage(props: PageProps<"/[lang]/projets/[slu
             {labNote ? (
               <p className="mt-8 text-[15px]">
                 <span className="text-muted-foreground">{t.project.labNote}</span>
-                <Link href={`${localePath(lang, "/lab")}#${labNote.slug}`} className={`font-medium ${textLink}`}>
+                <Link href={`${localePath(lang, "/lab")}#${labNote.slug}`} className={textLink}>
                   {labNote.title}
                 </Link>
               </p>
@@ -169,7 +169,7 @@ export default async function ProjectPage(props: PageProps<"/[lang]/projets/[slu
             {prev ? (
               <Link href={localePath(lang, `/projets/${prev.slug}`)} className="group">
                 <span className="text-[15px] text-muted-foreground">{t.project.previous}</span>
-                <span className="mt-1 block font-display text-2xl font-semibold tracking-tight group-hover:underline decoration-2 underline-offset-4">
+                <span className="mt-1 block font-display text-2xl font-semibold tracking-tight transition-colors group-hover:text-primary">
                   {prev.title}
                 </span>
               </Link>
@@ -179,7 +179,7 @@ export default async function ProjectPage(props: PageProps<"/[lang]/projets/[slu
             {next ? (
               <Link href={localePath(lang, `/projets/${next.slug}`)} className="group sm:text-right">
                 <span className="text-[15px] text-muted-foreground">{t.project.next}</span>
-                <span className="mt-1 block font-display text-2xl font-semibold tracking-tight group-hover:underline decoration-2 underline-offset-4">
+                <span className="mt-1 block font-display text-2xl font-semibold tracking-tight transition-colors group-hover:text-primary">
                   {next.title}
                 </span>
               </Link>

@@ -1,5 +1,6 @@
 import type { Locale } from "@/lib/i18n";
 import { projectsEn } from "./en";
+import { imageSrc } from "./media";
 
 export type ProjectCategory = "Web" | "Mobile" | "API";
 
@@ -37,13 +38,6 @@ export type Project = {
   featured?: boolean;
 };
 
-const img = (file: string, width: number, height: number, alt: string): ProjectImage => ({
-  src: `/images/projects/${file}`,
-  width,
-  height,
-  alt,
-});
-
 export const projects: Project[] = [
   {
     slug: "stoogo",
@@ -66,7 +60,7 @@ export const projects: Project[] = [
     ],
     stack: ["React Native", "Angular", "Golang", "PostgreSQL", "Docker", "OpenAI API", "Sentry", "PostHog"],
     links: [{ label: "stoogo.com", href: "https://stoogo.com/" }],
-    images: [img("stoogo.webp", 1747, 1017, "Interface de l'application STOOGO")],
+    images: [imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199581/tsiang.fr/projects/stoogo_qieyvl.webp", 1747, 1017, "Interface de l'application STOOGO")],
   },
   {
     slug: "plateforme-vpn",
@@ -88,9 +82,9 @@ export const projects: Project[] = [
     stack: ["Go", "gRPC", "WireGuard", "TLS/HMAC", "systemd", "nfpm (.deb/.rpm)", "IPv6", "Linux", "PostgreSQL", "Docker", "GitLab CI/CD"],
     links: [],
     images: [
-      img("cgsecure-install-agent.webp", 2000, 975, "Commande d'installation de l'agent sur un serveur VPN"),
-      img("cgsecure.webp", 2000, 922, "Dashboard de la plateforme VPN multi-serveurs"),
-      img("cgsecure-server.webp", 2000, 975, "Espace d'ajout des serveurs VPN dans la plateforme"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199583/tsiang.fr/projects/cgsecure-install-agent_byijst.png", 2000, 975, "Commande d'installation de l'agent sur un serveur VPN"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199585/tsiang.fr/projects/cgsecure_xuzji7.png", 2000, 922, "Dashboard de la plateforme VPN multi-serveurs"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199584/tsiang.fr/projects/cgsecure-server_aqqqco.png", 2000, 975, "Espace d'ajout des serveurs VPN dans la plateforme"),
     ],
     architecture: {
       center: "API centrale",
@@ -122,16 +116,16 @@ export const projects: Project[] = [
     stack: ["Vue.js", "React Native", "NestJS", "Node.js", "Prisma", "MySQL", "Docker", "Azure", "GitLab CI/CD"],
     links: [],
     images: [
-      img("pedaalma.webp", 2000, 971, "Module pédagogique d'Almamater"),
-      img("extrantetalma.webp", 2000, 956, "Extranet étudiants d'Almamater"),
-      img("alma1.webp", 738, 1600, "Application mobile Almamater"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199587/tsiang.fr/projects/pedaalma_iicawn.webp", 2000, 971, "Module pédagogique d'Almamater"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199585/tsiang.fr/projects/extrantetalma_zg9ujf.webp", 2000, 956, "Extranet étudiants d'Almamater"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199590/tsiang.fr/projects/alma1_lqnzg2.webp", 738, 1600, "Application mobile Almamater"),
     ],
   },
   {
     slug: "openpay",
-    client: "OpenPay CG",
+    client: "OPENPAY CG",
     period: "Depuis 2019",
-    title: "OpenPay",
+    title: "OPENPAY",
     domain: "FinTech",
     categories: ["Web"],
     featured: true,
@@ -148,9 +142,9 @@ export const projects: Project[] = [
     stack: ["Vue.js", "Nuxt", "PrimeVue", "Java", "Spring Boot", "Keycloak", "MySQL", "Docker", "WebSocket"],
     links: [{ label: "openpay.cg", href: "https://openpay.cg" }],
     images: [
-      img("openpay-home.webp", 2000, 979, "Page d'accueil"),
-      img("openpay-partner.webp", 2000, 964, "Espace Partenaire"),
-      img("openpay-admin.webp", 2000, 992, "Console d'administration"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199584/tsiang.fr/projects/openpay-home_mvxhqd.png", 2000, 979, "Page d'accueil"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199589/tsiang.fr/projects/openpay-partner_sccudr.png", 2000, 964, "Espace Partenaire"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199582/tsiang.fr/projects/openpay-admin_nqanlz.png", 2000, 992, "Console d'administration"),
     ],
   },
   {
@@ -171,8 +165,8 @@ export const projects: Project[] = [
     stack: ["Vue.js", "Nuxt", "Node.js", "Socket.io", "PostgreSQL", "Redis", "Docker", "GitLab CI/CD"],
     links: [{ label: "orient-ex.org", href: "https://orient-ex.org" }],
     images: [
-      img("orientex1.webp", 2000, 922, "Page d'accueil d'Orient'Ex"),
-      img("orientex2.webp", 2000, 975, "Espace mentorat d'Orient'Ex"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199581/tsiang.fr/projects/orientex1_umbdx6.webp", 2000, 922, "Page d'accueil d'Orient'Ex"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199589/tsiang.fr/projects/orientex2_tyxymd.webp", 2000, 975, "Espace mentorat d'Orient'Ex"),
     ],
   },
   {
@@ -190,9 +184,9 @@ export const projects: Project[] = [
     stack: ["React Native", "Expo", "Java", "Spring Boot", "PostgreSQL", "Keycloak", "TrueLayer", "Stripe", "Docker"],
     links: [],
     images: [
-      img("hb1.webp", 244, 527, "Écran des comptes de l'app bancaire"),
-      img("hb2.webp", 241, 522, "Écran des virements de l'app bancaire"),
-      img("hb3.webp", 240, 521, "Écran des cartes de l'app bancaire"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199593/tsiang.fr/projects/hb1_uysw5l.webp", 244, 527, "Écran des comptes de l'app bancaire"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199590/tsiang.fr/projects/hb2_mcnzyk.webp", 241, 522, "Écran des virements de l'app bancaire"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199591/tsiang.fr/projects/hb3_xh5zwn.webp", 240, 521, "Écran des cartes de l'app bancaire"),
     ],
   },
   {
@@ -209,9 +203,9 @@ export const projects: Project[] = [
     stack: ["React Native", "Expo", "Maps API", "Node.js", "Sequelize", "PostgreSQL", "Docker"],
     links: [],
     images: [
-      img("loukka1.webp", 1290, 2796, "Carte interactive de Loukka"),
-      img("loukka2.webp", 1290, 2796, "Fiche établissement dans Loukka"),
-      img("loukka4.webp", 1290, 2796, "Recherche géolocalisée dans Loukka"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199588/tsiang.fr/projects/loukka1_lzfojt.webp", 1290, 2796, "Carte interactive de Loukka"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199582/tsiang.fr/projects/loukka2_urchbh.webp", 1290, 2796, "Fiche établissement dans Loukka"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199595/tsiang.fr/projects/loukka4_ll178j.webp", 1290, 2796, "Recherche géolocalisée dans Loukka"),
     ],
   },
   {
@@ -228,8 +222,8 @@ export const projects: Project[] = [
     stack: ["React", "Tailwind", "Node.js", "MongoDB", "Stripe"],
     links: [],
     images: [
-      img("airnes1.webp", 2000, 974, "Page d'accueil de la boutique Airnes"),
-      img("airnes2.webp", 2000, 968, "Back-office de la boutique Airnes"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199587/tsiang.fr/projects/airnes1_zcmn7v.webp", 2000, 974, "Page d'accueil de la boutique Airnes"),
+      imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199594/tsiang.fr/projects/airnes2_p3qoks.webp", 2000, 968, "Back-office de la boutique Airnes"),
     ],
   },
   {
@@ -245,7 +239,7 @@ export const projects: Project[] = [
     ],
     stack: ["Vue.js", "Vuetify", "Firebase", "Netlify"],
     links: [{ label: "la démo", href: "https://gestache-tsiang.netlify.app/" }],
-    images: [img("gestache.webp", 2000, 992, "Tableau de tâches de Gestache")],
+    images: [imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199594/tsiang.fr/projects/gestache_qplniw.webp", 2000, 992, "Tableau de tâches de Gestache")],
   },
   {
     slug: "api-rendez-vous",
@@ -260,7 +254,7 @@ export const projects: Project[] = [
     ],
     stack: ["Node.js", "Sequelize", "MySQL", "Swagger", "REST API"],
     links: [{ label: "la documentation Swagger", href: "https://androidapi.herokuapp.com/api/v1/api-docs/" }],
-    images: [img("api-docs.webp", 2000, 989, "Documentation Swagger de l'API de rendez-vous")],
+    images: [imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199592/tsiang.fr/projects/api-docs_qg5lzn.webp", 2000, 989, "Documentation Swagger de l'API de rendez-vous")],
   },
   {
     slug: "api-gestion-sportive",
@@ -275,7 +269,7 @@ export const projects: Project[] = [
     ],
     stack: ["Java", "Spring Boot", "Docker", "Swagger", "REST API"],
     links: [],
-    images: [img("api-tennis.webp", 2000, 967, "Documentation OpenAPI de l'API de gestion sportive")],
+    images: [imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199592/tsiang.fr/projects/api-tennis_ctohg7.webp", 2000, 967, "Documentation OpenAPI de l'API de gestion sportive")],
   },
   {
     slug: "h3-freelance",
@@ -289,7 +283,7 @@ export const projects: Project[] = [
     ],
     stack: ["HTML", "CSS", "JavaScript", "PHP", "Symfony"],
     links: [],
-    images: [img("h3freelance.webp", 2000, 954, "Catalogue de services du site H3")],
+    images: [imageSrc("https://res.cloudinary.com/daogrxxyw/image/upload/v1795199586/tsiang.fr/projects/h3freelance_cgvg3v.webp", 2000, 954, "Catalogue de services du site H3")],
   },
 ];
 

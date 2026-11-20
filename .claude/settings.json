@@ -8,6 +8,7 @@
       "Edit(/docs/**)"
     ],
     "deny": [
+      "Read(docker-compose.yml)",
       "Read(./.env)",
       "Read(./.env.*)",
       "Read(/secrets/**)",
