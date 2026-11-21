@@ -322,9 +322,11 @@ export const labNotesEn: Record<
     project: string;
     status: string;
     summary: string;
+    proves: string[];
     platform?: string[];
     context: string[];
-    built: string[];
+    built?: string[];
+    sections?: { title: string; items: string[] }[];
     steps?: { title: string; items: string[]; after?: string[] };
     outcomes: string[];
   }
@@ -335,6 +337,12 @@ export const labNotesEn: Record<
     status: "In development",
     summary:
       "The agent that drives WireGuard on each VPN server is no longer a Docker container but a real Linux package, installed with apt or dnf.",
+    proves: [
+      "Packaging and shipping Go software on Linux (.deb/.rpm)",
+      "Linux administration: systemd, apt and dnf, iptables",
+      "Secure delivery: HTTPS and SHA-256 checksums",
+      "Automating the rollout of a fleet of servers",
+    ],
     platform: [
       "Distributed VPN architecture: a central Go API drives remote agents over gRPC, one per WireGuard VPN server.",
       "Server installation automated through Linux packages (.deb/.rpm), with TLS/HMAC authentication, automatic service startup and synchronization of VPN configurations.",
@@ -368,6 +376,47 @@ export const labNotesEn: Record<
       "systemd restarts the agent if it crashes, and its logs are in journalctl.",
       "Running the command again updates the agent.",
       "Adding a server takes a few minutes.",
+    ],
+  },
+  "go-grpc-plateforme-vpn": {
+    title: "Why Go and gRPC to drive the VPN servers",
+    project: "Multi-server VPN platform",
+    status: "In development",
+    summary:
+      "The central API and the agent installed on each VPN server are written in Go and talk over gRPC. Here is what drove these two choices.",
+    proves: [
+      "Designing a distributed architecture (central API and agents)",
+      "Server-side Go: concurrency, single binary, cross-compilation",
+      "gRPC and Protocol Buffers: typed contract, streaming, TLS",
+      "Choosing a technology for its constraints and explaining why",
+    ],
+    context: [
+      "The platform has two sides. A central API manages accounts, access and IP addresses. On each VPN server, an agent applies the WireGuard configuration the API sends it.",
+      "So I had to choose a language for these two programs, and a way for the API to give its orders to the agents.",
+    ],
+    sections: [
+      {
+        title: "Why Go",
+        items: [
+          "Go compiles to a single binary, with no runtime to install on the server. That is what makes it possible to ship the agent as a plain .deb or .rpm package.",
+          "WireGuard has its own Go ecosystem (wireguard-go, wgctrl): I stay in the language of the protocol's tools.",
+          "Goroutines let the API drive several VPN servers in parallel.",
+          "The API and the agent are written in the same language: they share code and the types generated from the gRPC contract.",
+        ],
+      },
+      {
+        title: "Why gRPC",
+        items: [
+          "A typed contract: a .proto file describes every exchange between the API and the agent, and a format mismatch shows up at compile time.",
+          "Streaming between the API and the agent, to synchronize the VPN configurations.",
+          "TLS built into the transport, backed by an HMAC signature.",
+          "HTTP/2 and Protocol Buffers: lighter, faster messages than REST/JSON.",
+        ],
+      },
+    ],
+    outcomes: [
+      "The agent stays light on the VPN servers.",
+      "The same CI builds the agent for amd64 and arm64.",
     ],
   },
 };

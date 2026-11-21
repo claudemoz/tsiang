@@ -37,6 +37,7 @@ const fr = {
     experience: "Expérience",
     competences: "Compétences",
     lab: "Lab",
+    labHint: "Mes notes techniques",
     contact: "Contact",
   },
   hero: {
@@ -137,6 +138,7 @@ const fr = {
     technologies: "Technologies",
     screenshots: "Captures d'écran",
     labNote: "Note technique dans le Lab : ",
+    labNotes: "Notes techniques dans le Lab",
     otherProjects: "Autres projets",
     previous: "Projet précédent",
     next: "Projet suivant",
@@ -147,7 +149,7 @@ const fr = {
   lab: {
     title: "Lab",
     introBefore:
-      "Des notes techniques sur mes projets personnels. Chaque note isole un problème précis : le contexte, ce que j'ai mis en place et ce que ça change. Les projets complets sont dans la page",
+      "Des notes techniques sur mes projets personnels. Chaque note isole un problème ou un choix précis : le contexte, ce que j'ai décidé et pourquoi, et ce que ça change. Les projets complets sont dans la page",
     introLink: "Projets",
     status: "Statut",
     technologies: "Technologies",
@@ -156,6 +158,10 @@ const fr = {
     built: "Ce que j'ai mis en place",
     onServer: "Sur le VPS, la commande :",
     outcomes: "Ce que ça change",
+    proves: "Ce que ça montre",
+    readNote: "Lire la note",
+    allNotes: "Toutes les notes du Lab",
+    otherNotes: "Autres notes",
   },
   notFound: {
     heading: "Cette page n'existe pas.",
@@ -202,6 +208,7 @@ const en: Dictionary = {
     experience: "Experience",
     competences: "Skills",
     lab: "Lab",
+    labHint: "My technical notes",
     contact: "Contact",
   },
   hero: {
@@ -300,6 +307,7 @@ const en: Dictionary = {
     technologies: "Technologies",
     screenshots: "Screenshots",
     labNote: "Technical note in the Lab: ",
+    labNotes: "Technical notes in the Lab",
     otherProjects: "Other projects",
     previous: "Previous project",
     next: "Next project",
@@ -310,7 +318,7 @@ const en: Dictionary = {
   lab: {
     title: "Lab",
     introBefore:
-      "Technical notes on my personal projects. Each note isolates one specific problem: the context, what I built and what it changes. Complete projects are on the",
+      "Technical notes on my personal projects. Each note isolates one specific problem or choice: the context, what I decided and why, and what it changes. Complete projects are on the",
     introLink: "Projects page",
     status: "Status",
     technologies: "Technologies",
@@ -319,6 +327,10 @@ const en: Dictionary = {
     built: "What I built",
     onServer: "On the VPS, the command:",
     outcomes: "What it changes",
+    proves: "What it shows",
+    readNote: "Read the note",
+    allNotes: "All Lab notes",
+    otherNotes: "Other notes",
   },
   notFound: {
     heading: "This page does not exist.",

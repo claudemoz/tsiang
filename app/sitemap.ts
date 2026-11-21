@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { profile } from "@/data/profile";
+import { labNotes } from "@/data/lab";
 import { projects } from "@/data/projects";
 import { localePath, locales } from "@/lib/i18n";
 
@@ -11,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/projets", changeFrequency: "monthly", priority: 0.8 },
     { path: "/lab", changeFrequency: "monthly", priority: 0.6 },
     ...projects.map((p) => ({ path: `/projets/${p.slug}`, changeFrequency: "yearly" as const, priority: 0.6 })),
+    ...labNotes.map((n) => ({ path: `/lab/${n.slug}`, changeFrequency: "yearly" as const, priority: 0.5 })),
   ];
   return pages.flatMap((page) =>
     locales.map((lang) => ({

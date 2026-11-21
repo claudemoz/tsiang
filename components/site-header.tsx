@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { navItems } from "@/data/navigation";
+import { labItem, navItems } from "@/data/navigation";
 import { getProfile } from "@/data/profile";
 import { getDictionary } from "@/lib/dictionaries";
 import { localePath } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
+import { LabLink, LabLinkFallback } from "./lab-link";
 import { LanguageSwitch, LanguageSwitchFallback } from "./language-switch";
 import { MobileNav } from "./mobile-nav";
 import { Container } from "./primitives";
@@ -20,6 +21,7 @@ export async function SiteHeader() {
     href: localePath(lang, item.path),
     label: t.nav[item.id],
   }));
+  const lab = { href: localePath(lang, labItem.path), label: t.nav.lab, hint: t.nav.labHint };
 
   return (
     <header className="site-header sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-md">
@@ -40,6 +42,11 @@ export async function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-1">
+          {/* Phones: the header has no room left, the Lab sits in the mobile menu. */}
+          <Suspense fallback={<LabLinkFallback {...lab} className="max-sm:hidden" />}>
+            <LabLink {...lab} className="max-sm:hidden" />
+          </Suspense>
+          <span aria-hidden className="mx-1.5 hidden h-5 w-px bg-border sm:block" />
           <Suspense
             fallback={<LanguageSwitchFallback lang={lang} label={other.a11y.switchTo} groupLabel={t.a11y.language} />}
           >
@@ -47,6 +54,7 @@ export async function SiteHeader() {
           </Suspense>
           <MobileNav
             items={items}
+            lab={lab}
             name={profile.name}
             subtitle={`${profile.role} ${profile.tagline}`}
             cv={profile.cv}

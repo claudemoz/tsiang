@@ -6,26 +6,36 @@ import { DownloadIcon, MenuIcon } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { stripLocale } from "@/lib/i18n";
+import { ConsoleCursor, ConsoleIcon, consoleSurface } from "./lab-link";
 import type { NavLink } from "./site-nav";
 
 /** Phone and tablet navigation: the full menu in a side sheet. */
 export function MobileNav({
   items,
+  lab,
   name,
   subtitle,
   cv,
   labels,
 }: {
   items: NavLink[];
+  lab: { href: string; label: string; hint: string };
   name: string;
   subtitle: string;
   cv: string;
   labels: { openMenu: string; mainNav: string; downloadCv: string };
 }) {
   const [open, setOpen] = useState(false);
+  // Read when the menu opens: usePathname here would need a Suspense boundary around the header button.
+  const [onLab, setOnLab] = useState(false);
+  const toggle = (next: boolean) => {
+    if (next) setOnLab(stripLocale(window.location.pathname).startsWith("/lab"));
+    setOpen(next);
+  };
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet open={open} onOpenChange={toggle}>
       <SheetTrigger
         aria-label={labels.openMenu}
         className={buttonVariants({ variant: "ghost", size: "icon-lg", className: "md:hidden" })}
@@ -52,6 +62,20 @@ export function MobileNav({
               </li>
             ))}
           </ul>
+          <SheetClose
+            nativeButton={false}
+            render={<Link href={lab.href} aria-current={onLab ? "page" : undefined} />}
+            className={`${consoleSurface} mt-3 flex items-center gap-3 rounded-lg px-3 py-2.5`}
+          >
+            <ConsoleIcon current={onLab} />
+            <span className="flex min-w-0 flex-col leading-tight">
+              <span className="flex items-center gap-1.5 text-[17px] font-medium">
+                {lab.label}
+                <ConsoleCursor current={onLab} className="h-4" />
+              </span>
+              <span className="text-caption opacity-70">{lab.hint}</span>
+            </span>
+          </SheetClose>
         </nav>
         <Separator />
         <div className="p-6">

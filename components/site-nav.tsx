@@ -11,7 +11,7 @@ export type NavLink = { id: NavId; href: string; label: string };
 export const navLinkClass =
   "relative rounded-lg px-3 py-2 text-[15px] transition-colors hover:text-foreground";
 
-/** Highlights the section currently in view on the home page, "Projets" on project pages, "Lab" on /lab. */
+/** Highlights the section currently in view on the home page and "Projets" on project pages. */
 export function SiteNav({ items }: { items: NavLink[] }) {
   // Same value on the server ("/fr/…" from the rewrite) and in the browser ("/…" or "/en/…").
   const path = stripLocale(usePathname() ?? "/");
@@ -43,11 +43,9 @@ export function SiteNav({ items }: { items: NavLink[] }) {
 
   const active: NavId | null = path.startsWith("/projets")
     ? "projets"
-    : path.startsWith("/lab")
-      ? "lab"
-      : onHome
-        ? inView
-        : null;
+    : onHome
+      ? inView
+      : null;
 
   return (
     <ul className="flex items-center gap-1">

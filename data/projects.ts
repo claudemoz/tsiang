@@ -25,8 +25,6 @@ export type Project = {
    * one central service linked to several remote nodes.
    */
   architecture?: { center: string; centerDetail: string; link: string; node: string; nodeDetail: string };
-  /** Slug of the matching Lab note, when there is one. */
-  labNote?: string;
   /** Où le projet a été réalisé (entreprise, client). */
   client?: string;
   period?: string;
@@ -88,7 +86,6 @@ export const projects: Project[] = [
       node: "Agent",
       nodeDetail: "WireGuard, systemd",
     },
-    labNote: "agent-vpn-paquet-linux",
   },
   {
     slug: "almamater",

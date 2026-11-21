@@ -7,7 +7,7 @@ import { alternatesFor, hasLocale, localePath, type Locale } from "@/lib/i18n";
 import { diagramCaption } from "@/components/featured-projects";
 import { BrowserFrame, PhoneRow } from "@/components/project-media";
 import { ArchitectureDiagram } from "@/components/architecture-diagram";
-import { getLabNotes } from "@/data/lab";
+import { getLabNotesForProject } from "@/data/lab";
 import { certificationForStack } from "@/data/certifications";
 import { CertifiedMark } from "@/components/certified-mark";
 import { ContactCta } from "@/components/contact-cta";
@@ -43,7 +43,7 @@ export default async function ProjectPage(props: PageProps<"/[lang]/projets/[slu
   const web = project.images.filter((i) => !isPortrait(i));
   const mobile = project.images.filter(isPortrait);
   const [cover, ...moreWeb] = web;
-  const labNote = getLabNotes(lang).find((n) => n.slug === project.labNote);
+  const labNotes = getLabNotesForProject(project.slug, lang);
 
   const facts = [
     { label: t.projects.role, value: project.role },
@@ -117,13 +117,26 @@ export default async function ProjectPage(props: PageProps<"/[lang]/projets/[slu
                 </li>
               ))}
             </ul>
-            {labNote ? (
+            {labNotes.length === 1 ? (
               <p className="mt-8 text-[15px]">
                 <span className="text-muted-foreground">{t.project.labNote}</span>
-                <Link href={`${localePath(lang, "/lab")}#${labNote.slug}`} className={textLink}>
-                  {labNote.title}
+                <Link href={localePath(lang, `/lab/${labNotes[0].slug}`)} className={textLink}>
+                  {labNotes[0].title}
                 </Link>
               </p>
+            ) : labNotes.length > 1 ? (
+              <div className="mt-8 text-[15px]">
+                <h3 className="text-muted-foreground">{t.project.labNotes}</h3>
+                <ul className="mt-2 space-y-1.5">
+                  {labNotes.map((n) => (
+                    <li key={n.slug}>
+                      <Link href={localePath(lang, `/lab/${n.slug}`)} className={textLink}>
+                        {n.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ) : null}
           </div>
           <aside className="lg:col-span-4 lg:col-start-9">

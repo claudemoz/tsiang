@@ -15,9 +15,14 @@ export type LabNote = {
   platform?: string[];
   status: string;
   summary: string;
+  /** What the note proves, in a recruiter's words: skills, not tools alone. */
+  proves: string[];
   stack: string[];
   context: string[];
-  built: string[];
+  /** "Ce que j'ai mis en place": hairline list. */
+  built?: string[];
+  /** Free sections after the context, each a titled hairline list (e.g. "Pourquoi Go"). */
+  sections?: { title: string; items: string[] }[];
   /** Ordered steps: rendered as a numbered sequence. */
   steps?: { title: string; items: string[]; after?: string[] };
   outcomes: string[];
@@ -37,6 +42,12 @@ export const labNotes: LabNote[] = [
     status: "En cours de développement",
     summary:
       "L'agent qui pilote WireGuard sur chaque serveur VPN n'est plus un conteneur Docker mais un vrai paquet Linux, installé par apt ou dnf.",
+    proves: [
+      "Packaging et distribution d'un logiciel Go sur Linux (.deb/.rpm)",
+      "Administration Linux : systemd, apt et dnf, iptables",
+      "Sécurité de la livraison : HTTPS et empreintes SHA-256",
+      "Automatisation du déploiement d'une flotte de serveurs",
+    ],
     stack: ["Go", "gRPC", "WireGuard", "TLS/HMAC", "nfpm", "systemd", "apt / dnf", "iptables"],
     context: [
       "Je développe une plateforme VPN basée sur WireGuard. Sur chaque serveur VPN tourne un agent, qui gère l'interface WireGuard pour le compte de l'API.",
@@ -68,7 +79,60 @@ export const labNotes: LabNote[] = [
       "Ajouter un serveur prend quelques minutes.",
     ],
   },
+  {
+    slug: "go-grpc-plateforme-vpn",
+    title: "Pourquoi Go et gRPC pour piloter les serveurs VPN",
+    project: "Plateforme VPN multi-serveurs",
+    projectSlug: "plateforme-vpn",
+    status: "En cours de développement",
+    summary:
+      "L'API centrale et l'agent installé sur chaque serveur VPN sont écrits en Go et se parlent en gRPC. Voici ce qui a guidé ces deux choix.",
+    proves: [
+      "Conception d'une architecture distribuée (API centrale et agents)",
+      "Go côté serveur : concurrence, binaire unique, cross-compilation",
+      "gRPC et Protocol Buffers : contrat typé, streaming, TLS",
+      "Choisir une technologie pour ses contraintes et l'expliquer",
+    ],
+    stack: ["Go", "gRPC", "Protocol Buffers", "HTTP/2", "TLS/HMAC", "WireGuard"],
+    context: [
+      "La plateforme a deux côtés. Une API centrale gère les comptes, les accès et les adresses IP. Sur chaque serveur VPN, un agent applique la configuration WireGuard que l'API lui envoie.",
+      "Il fallait donc choisir un langage pour ces deux programmes, et une façon pour l'API de donner ses ordres aux agents.",
+    ],
+    sections: [
+      {
+        title: "Pourquoi Go",
+        items: [
+          "Go compile en un seul binaire, sans runtime à installer sur le serveur. C'est ce qui permet de livrer l'agent dans un simple paquet .deb ou .rpm.",
+          "WireGuard a son écosystème en Go (wireguard-go, wgctrl) : je reste dans le langage des outils du protocole.",
+          "Les goroutines permettent à l'API de piloter plusieurs serveurs VPN en parallèle.",
+          "L'API et l'agent sont écrits dans le même langage : ils partagent le code et les types générés depuis le contrat gRPC.",
+        ],
+      },
+      {
+        title: "Pourquoi gRPC",
+        items: [
+          "Un contrat typé : un fichier .proto décrit chaque échange entre l'API et l'agent, et un écart de format se voit à la compilation.",
+          "Le streaming entre l'API et l'agent, pour la synchronisation des configurations VPN.",
+          "TLS intégré au transport, complété par une signature HMAC.",
+          "HTTP/2 et Protocol Buffers : des messages plus légers et plus rapides que du REST/JSON.",
+        ],
+      },
+    ],
+    outcomes: [
+      "L'agent reste léger sur les serveurs VPN.",
+      "La même CI compile l'agent en amd64 et en arm64.",
+    ],
+  },
 ];
+
+export function getLabNote(slug: string, lang: Locale = "fr"): LabNote | undefined {
+  return getLabNotes(lang).find((n) => n.slug === slug);
+}
+
+/** Notes attached to a project page, in Lab order. */
+export function getLabNotesForProject(projectSlug: string, lang: Locale = "fr"): LabNote[] {
+  return getLabNotes(lang).filter((n) => n.projectSlug === projectSlug);
+}
 
 export function getLabNotes(lang: Locale = "fr"): LabNote[] {
   if (lang === "fr") return labNotes;

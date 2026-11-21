@@ -324,6 +324,15 @@ html {
 .hero-in > *:nth-child(4) { animation-delay: 240ms; }
 .hero-in > *:nth-child(5) { animation-delay: 320ms; }
 
+/* Lab link: the console cursor blinks only while the visitor points at or focuses the link. */
+@keyframes console-blink {
+  50% { opacity: 0; }
+}
+.console-link:hover .console-cursor,
+.console-link:focus-visible .console-cursor {
+  animation: console-blink 1s steps(1) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
