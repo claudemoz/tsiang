@@ -48,3 +48,6 @@ CMD ["node", "server.js"]
 
 # docker buildx build --platform linux/amd64 -t tsiang/portfolio .
 # docker push tsiang/portfolio:latest
+
+# docker compose build app  
+# docker compose push app 
