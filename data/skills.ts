@@ -9,7 +9,7 @@ export const skillGroups: { title: string; items: string[] }[] = [
   { title: "Mobile", items: ["React Native", "Expo", "OTA Updates"] },
   {
     title: "Backend",
-    items: ["Node.js, NestJS", "Golang, Gin", "Spring Boot, Java", "Symfony, PHP", "WebSockets, Socket.io", "OpenAI API"],
+    items: ["Node.js, NestJS", "Golang, Gin", "Spring Boot, Java", "Symfony, PHP", "WebSockets, Socket.io"],
   },
   {
     title: "Bases de données",
@@ -19,6 +19,7 @@ export const skillGroups: { title: string; items: string[] }[] = [
     title: "Infrastructure & DevOps",
     items: ["Docker, Nginx", "Kubernetes, Helm, ArgoCD", "GitLab CI/CD", "Azure, AWS", "Keycloak", "Sentry, PostHog, ELK"],
   },
+  { title: "IA / LLM", items: ["OpenAI API", "Claude Code", "Cursor"] },
 ];
 
 export function getSkillGroups(lang: Locale = "fr") {

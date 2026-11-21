@@ -313,6 +313,7 @@ export const skillGroupTitlesEn: Record<string, string> = {
   Backend: "Backend",
   "Bases de données": "Databases",
   "Infrastructure & DevOps": "Infrastructure & DevOps",
+  "IA / LLM": "AI / LLM",
 };
 
 export const labNotesEn: Record<
