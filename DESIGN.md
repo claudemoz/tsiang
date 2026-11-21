@@ -229,12 +229,12 @@ Period (amber with a dot when `current`), role title, employer (linked when it h
 
 ### Code activity (live)
 `components/code-activity.tsx` (server) renders the latest snapshot into `components/live-code-activity.tsx` (client), in the hero right under the name and role, with no card around it.
-- Header: "Activité de code" with an "En direct" label and a pulsing amber `signal` dot (gray "Hors ligne" when a refresh fails); on the right, "Dernière activité" as a live relative time.
+- Header: "Activité de code", then the live indicator (`LiveIndicator`: an amber `signal` dot inside a thin ring that fills up over one refresh cycle, 60 s, with one ping per real check) and a status in words: "En direct, mise à jour dans 42 s" (counts down every second), "mise à jour en cours" during the check, "à jour à l'instant" for 4 s after it. When a check fails: gray dot, "Hors ligne, nouvel essai dans 42 s". On the right, "Dernière activité" as a live relative time.
 - Figures: total contributions over 12 months, active days, sources, tabular numerals. The total flashes amber once when it changes.
-- Calendar: one column per week, Monday on top, month labels above and lun./mer./ven. on the side, five steps from `line` to full `accent` on a square-root scale. One calendar for every screen: CSS variables set the visible weeks (18, 40 from `sm`, 53 from `lg`) and the cell size (12px, fluid from `lg`).
-- Motion: on load the cells sweep in left to right (`.activity-cell`, 12ms per week), the page's single entrance moment with the hero. A day whose count changes during the visit gets an amber ring twice (`.is-new`). All of it stops under `prefers-reduced-motion`.
+- Calendar: one column per week, Monday on top, month labels above and lun./mer./ven. on the side, five steps from `line` to full `accent` on a square-root scale. One calendar for every screen: CSS variables set the visible weeks (18, 40 from `sm`, 53 from `lg`); columns stretch to the full width on every screen. A month label is skipped when its month shows less than three columns at either edge. Today carries an inset amber `signal` outline (the square the next check can fill), explained by an "Aujourd'hui" swatch before the Moins/Plus legend. Only `LiveStatus` re-renders every second; the grid (`ActivityCalendar`, memoized) re-renders only when a check brings new counts.
+- Motion: on load the cells sweep in left to right (`.activity-cell`, 12ms per week), the page's single entrance moment with the hero. A day whose count changes during the visit gets an amber ring twice (`.is-new`), and "+N à l'instant" rises in, amber, right after the total for 8 s (`.live-gain`). All of it stops under `prefers-reduced-motion`.
 - Live: the browser asks `/api/activity` every 60 s while the tab is visible and updates in place. Counts only. Hidden when GitLab data is missing.
-- The pulsing dot is the one exception to "no pulsing badges": it is allowed only because the data next to it is genuinely live.
+- The live indicator is the one exception to "no pulsing badges": it is allowed only because the data next to it is genuinely live, and each ping matches a real check, never a loop for show.
 
 ### Lab page
 `/lab` (`app/lab/page.tsx`, content in `data/lab.ts`): page title and one-line intro like `/projets`, then one note per row between hairlines. Each note uses the résumé layout: a sticky margin column (project in `primary`, title, status, technologies) and a reading column capped at 68ch: summary in 20px, then "Le contexte", "Ce que j'ai mis en place" (hairline list), an optional numbered sequence (petrol-soft circles, used only for real ordered steps) and "Ce que ça change" (two-column list with petrol check icons). The header nav gains "Lab", active on `/lab`.
@@ -283,7 +283,7 @@ Continues the contact band in deep petrol (`region`, `on-region`, `on-region-mut
 
 ### Don't:
 - Don't use em dashes (—), middle dots (·), decorative ellipses or "→" in copy.
-- Don't add eyebrow/kicker labels above headings, stat tiles, pulsing availability badges, or numbered section markers. A pulsing dot only marks data that is genuinely live (the code activity).
+- Don't add eyebrow/kicker labels above headings, stat tiles, pulsing availability badges, or numbered section markers. A ping only marks data that is genuinely live (the code activity), once per real check.
 - Don't chop content into identical shadowed cards or add hover zoom on every image.
 - Don't add a third accent hue, gradients, glass effects or monospace labels.
 - Don't invent facts: no testimonials, metrics, client logos or availability dates.
