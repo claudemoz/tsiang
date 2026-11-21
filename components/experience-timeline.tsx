@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ChevronDownIcon } from "lucide-react";
 import { getExperiences } from "@/data/experience";
 import { getProfile } from "@/data/profile";
 import { getProject } from "@/data/projects";
@@ -33,20 +34,12 @@ export async function ExperienceTimeline() {
           </p>
           <p className="mt-4 max-w-[65ch] text-pretty">{xp.summary}</p>
           {xp.highlights.length > 0 ? (
-            <ul className="mt-4 max-w-[65ch] list-disc space-y-1.5 pl-5 text-muted-foreground marker:text-border">
-              {xp.highlights.map((h) => (
-                <li key={h}>{h}</li>
-              ))}
-            </ul>
+            <TaskList items={xp.highlights} more={t.experience.showMore} className="mt-4 max-w-[65ch]" />
           ) : null}
           {xp.groups?.map((group) => (
             <div key={group.title} className="mt-6 max-w-[65ch]">
               <h4 className="font-medium">{group.title}</h4>
-              <ul className="mt-2 list-disc space-y-1.5 pl-5 text-muted-foreground marker:text-border">
-                {group.items.map((h) => (
-                  <li key={h}>{h}</li>
-                ))}
-              </ul>
+              <TaskList items={group.items} more={t.experience.showMore} className="mt-2" />
             </div>
           ))}
           {xp.stack.length > 0 ? <StackLine items={xp.stack} className="mt-4" label={t.skills.technologies} /> : null}
@@ -60,6 +53,44 @@ export async function ExperienceTimeline() {
         </li>
       ))}
     </ol>
+  );
+}
+
+/** Lists longer than this show their first items and fold the rest. */
+const VISIBLE_TASKS = 4;
+
+/**
+ * A role's tasks. Long lists (the Almamater role has 20) show the first four and fold the rest into
+ * a native disclosure, so the page reads like a CV and not a job description; everything stays in
+ * the HTML for search engines and Ctrl+F.
+ */
+function TaskList({ items, more, className = "" }: { items: string[]; more: (n: number) => string; className?: string }) {
+  const list = "list-disc space-y-1.5 pl-5 text-muted-foreground marker:text-border";
+  const folded = items.length > VISIBLE_TASKS + 1;
+  const shown = folded ? items.slice(0, VISIBLE_TASKS) : items;
+  const rest = folded ? items.slice(VISIBLE_TASKS) : [];
+  return (
+    <div className={className}>
+      <ul className={list}>
+        {shown.map((h) => (
+          <li key={h}>{h}</li>
+        ))}
+      </ul>
+      {rest.length > 0 ? (
+        <details className="group">
+          {/* Like "read more": once open, the full list simply continues and the toggle goes away. */}
+          <summary className="mt-2 inline-flex cursor-pointer list-none items-center gap-1 rounded-sm text-[15px] font-medium text-primary transition-colors group-open:hidden hover:text-foreground [&::-webkit-details-marker]:hidden">
+            <ChevronDownIcon aria-hidden className="size-4" />
+            {more(rest.length)}
+          </summary>
+          <ul className={`mt-1.5 ${list}`}>
+            {rest.map((h) => (
+              <li key={h}>{h}</li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
+    </div>
   );
 }
 

@@ -20,32 +20,32 @@ export async function Hero() {
 
   return (
     <section aria-labelledby="hero-titre">
-      <Container className="grid gap-10 pt-12 pb-16 sm:pt-16 sm:pb-20 lg:grid-cols-12 lg:gap-x-24 lg:gap-y-14 lg:pt-20 lg:pb-24">
-        <div className="hero-in order-2 lg:order-1 lg:col-span-8 lg:self-center">
+      <Container className="grid gap-10 pt-12 pb-16 sm:pt-16 sm:pb-20 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,21rem)] lg:gap-x-14 lg:gap-y-14 lg:pt-20 lg:pb-24 xl:gap-x-24">
+        <div className="hero-in order-2 lg:order-1 lg:self-center">
           <h1
             id="hero-titre"
-            className="font-hero text-[clamp(2.25rem,4.6vw,3.75rem)] leading-[1.02] font-semibold tracking-[-0.04em]"
+            className="font-hero text-[clamp(2.25rem,4.6vw,3.75rem)] leading-[1.02] font-semibold tracking-[-0.035em] text-balance"
           >
-            {/* <span className="block whitespace-nowrap">{profile.name}</span> */}
-            <span className="block font-medium text-muted-foreground">{profile.role}</span>
+            {profile.role}
           </h1>
-          <Suspense fallback={<div aria-hidden className="mt-8 min-h-[13.5rem] max-w-[44rem]" />}>
-            <CodeActivity className="mt-8 max-w-[44rem]" />
-          </Suspense>
-          <div className="mt-9 flex flex-wrap items-center gap-3">
+          <p className="mt-6 max-w-[58ch] text-[17px] leading-relaxed text-pretty">{profile.intro}</p>
+          <p className="mt-3 max-w-[58ch] text-[17px] leading-relaxed text-pretty text-muted-foreground">{profile.approach}</p>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <a href={profile.cv} download className={buttonStyles.primary}>
               <DownloadIcon />
               {t.hero.downloadCv}
             </a>
             {booking ? <BookingDialog booking={booking} labels={t.booking} /> : null}
           </div>
-          <p className="mt-8 max-w-[58ch] text-[17px] leading-relaxed text-pretty">{profile.intro}</p>
-          <p className="mt-3 max-w-[58ch] text-[17px] leading-relaxed text-pretty">{profile.approach}</p>
+          {/* The proof after the pitch: what I do, how to reach me, then the year of code behind it. */}
+          <Suspense fallback={<div aria-hidden className="mt-12 min-h-[13.5rem] max-w-[44rem]" />}>
+            <CodeActivity className="mt-12 max-w-[44rem] border-t border-border pt-6" />
+          </Suspense>
         </div>
 
         <aside
           aria-label={t.a11y.inBrief}
-          className="hero-in order-1 flex items-start gap-5 lg:order-2 lg:col-span-4 lg:flex-col lg:gap-0"
+          className="hero-in order-1 flex items-start gap-5 lg:order-2 lg:flex-col lg:gap-0"
         >
           <div className="relative w-24 shrink-0 sm:w-32 lg:w-64">
             {/* Top padding only: the head no longer touches the top of the circle. The white

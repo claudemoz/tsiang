@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from "react";
 import { buttonVariants } from "@/components/ui/button";
 
 export function Container({ className = "", ...props }: ComponentProps<"div">) {
-  return <div className={`mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 ${className}`} {...props} />;
+  return <div className={`mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 ${className}`} {...props} />;
 }
 
 /**

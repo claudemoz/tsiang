@@ -20,7 +20,7 @@ export async function FeaturedProjects() {
     <div>
       <article className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-12">
         <Link href={href(lead.slug)} tabIndex={-1} aria-hidden className="block lg:col-span-7">
-          <BrowserFrame image={lead.images[0]} host={projectHost(lead)} sizes="(min-width: 1024px) 640px, 100vw" />
+          <BrowserFrame image={lead.images[0]} host={projectHost(lead)} sizes="(min-width: 1024px) 720px, 100vw" />
         </Link>
         <div className="lg:col-span-5">
           <h3 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">{lead.title}</h3>
@@ -45,7 +45,7 @@ export async function FeaturedProjects() {
           <article key={project.slug} className="group relative">
             <ProjectThumb
               project={project}
-              sizes="(min-width: 768px) 360px, 100vw"
+              sizes="(min-width: 768px) 400px, 100vw"
               diagramCaption={diagramCaption(project, lang)}
             />
             <h3 className="mt-5 font-display text-2xl font-semibold tracking-tight">

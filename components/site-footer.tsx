@@ -12,22 +12,20 @@ export async function SiteFooter() {
   const profile = getProfile(lang);
   const t = getDictionary(lang);
   const profiles = [
+    { label: "LinkedIn", href: profile.linkedin, Icon: LinkedInIcon },
     { label: "GitLab", href: profile.gitlab, Icon: GitLabIcon },
     { label: "GitHub", href: profile.github, Icon: GitHubIcon },
-    { label: "LinkedIn", href: profile.linkedin, Icon: LinkedInIcon },
   ];
   return (
     <footer className="bg-region text-[15px] text-on-region-muted">
       <Container className="pb-14">
         <div className="mb-14 border-t border-on-region/15" />
-        <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="font-display text-2xl font-semibold tracking-tight text-on-region">{profile.name}</p>
             <p className="mt-1">
               {profile.role} {profile.tagline}
             </p>
-            <p className="mt-4 max-w-[52ch] text-pretty">{profile.intro}</p>
-            <p className="mt-3 max-w-[52ch] text-pretty">{profile.approach}</p>
           </div>
           <ul className="flex gap-2" aria-label={t.a11y.profiles}>
             {profiles.map(({ label, href, Icon }) => (

@@ -87,6 +87,7 @@ const fr = {
   },
   experience: {
     seeProject: "Voir la fiche du projet",
+    showMore: (n: number) => `Afficher ${n} autres missions`,
   },
   skills: {
     certified: "certifié",
@@ -249,6 +250,7 @@ const en: Dictionary = {
   },
   experience: {
     seeProject: "See the project page for",
+    showMore: (n: number) => `Show ${n} more tasks`,
   },
   skills: {
     certified: "certified",

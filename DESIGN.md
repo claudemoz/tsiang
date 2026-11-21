@@ -100,7 +100,7 @@ spacing:
   gutter-lg: "32px"
   section: "64px"
   section-sm: "96px"
-  container: "72rem"
+  container: "80rem"
 components:
   button-primary:
     backgroundColor: "{colors.accent}"
@@ -189,7 +189,7 @@ Two clearly distinct families loaded with `next/font/google`:
 
 ## Layout
 
-- Container: `max-w-6xl` (72rem), gutters 16px / 24px / 32px.
+- Container: `max-w-7xl` (80rem), gutters 16px / 24px / 32px.
 - **Résumé sections** (`Section` in `components/ui.tsx`): on `lg`, a 12-column grid with the heading in 3 columns (sticky at `top-24`) and content in 9. Sections are separated by a 1px top border and 64px / 96px vertical padding. `wide` puts screenshots at full width under the heading. An optional `intro` (one factual sentence, `muted`) sits under the heading in the margin column, or beside it for `wide` sections.
 - Home order: hero, projects (wide), experience, skills (with certifications as an `h3` subsection, anchor `#certifications`), contact band.
 - `/projets` is an index: rows of thumbnail (4 cols), text (5 cols), facts list (3 cols), divided by hairlines. It stacks on mobile.
@@ -225,7 +225,7 @@ shadcn `Button` / `buttonVariants` (`components/ui/button.tsx`) with a site size
 `components/project-media.tsx`. Web screenshots sit in a plain browser window whose address bar shows the real domain when the project has one (`projectHost`). Mobile screenshots sit in dark phone outlines, up to three side by side on an `accent-soft` panel. `ProjectThumb` gives every project the same 16:10 thumbnail whatever the screenshot orientation.
 
 ### Experience entry
-Period (amber with a dot when `current`), role title, employer (linked when it has a site), summary, highlights, stack line, then "Voir la fiche du projet …" when the role has a matching project page (`project` slug in `data/experience.ts`).
+Period (amber with a dot when `current`), role title, employer (linked when it has a site), summary, highlights (`TaskList`: a list longer than five shows four tasks and folds the rest into a native `<details>`, "Afficher N autres missions" in `primary`, which disappears once open), stack line, then "Voir la fiche du projet …" when the role has a matching project page (`project` slug in `data/experience.ts`).
 
 ### Code activity (live)
 `components/code-activity.tsx` (server) renders the latest snapshot into `components/live-code-activity.tsx` (client), in the hero right under the name and role, with no card around it.
@@ -266,10 +266,10 @@ On phones and tablets a menu button opens a shadcn `Sheet` (`components/mobile-n
 Sticky header. Transparent over the top of the page, then `bg/85`, blur and a bottom border after 48px of scroll, driven by a CSS scroll timeline (`.site-header` in `globals.css`); browsers without scroll-driven animations keep the solid header. Left: the name and the role and tagline underneath (shown on `sm` and from `lg`, hidden on `md` where the nav needs the room). Center (desktop): section anchors from `components/site-nav.tsx`; the section in view (IntersectionObserver, upper third of the viewport) or "Projets" on `/projets*` gets `aria-current`, ink text and a 2px petrol underline. Right: the FR / EN switch, then the mobile menu button. No profile icons: LinkedIn, GitLab and GitHub live in the hero aside and the footer. The CV download lives in the hero and the mobile menu. The active nav is wrapped in `Suspense` with a static fallback, as Cache Components requires for `usePathname` in a layout.
 
 ### Hero
-Left: name (`ink`) over role (`muted`) as the `h1`, then the live code activity, the CV and booking buttons and a short presentation (`profile.intro`, 17px, `foreground`). Right (`aside`, "En bref"): the circular portrait, then the facts list from `profile.facts` (current work linking to STOOGO, availability, work mode, mobility) between hairlines. 96px (6rem) gap between the two columns on desktop. On mobile the portrait sits beside the first two facts, above the heading.
+Left: the role as the `h1` (`ink`; the name lives in the header), then the pitch (`profile.intro` in `foreground`, `profile.approach` in `muted`, 17px), the CV and booking buttons, and below a hairline the live code activity: pitch, action, then proof. On phones the CV button sits in the first screen. Right (`aside`, "En bref"): the circular portrait, then the facts list from `profile.facts` (current work linking to STOOGO, availability, work mode, mobility) between hairlines. Two columns on desktop (`minmax(0,1fr)` and 16 to 21rem for the aside), 56px apart on `lg` and 96px from `xl`. On mobile the portrait sits beside the first two facts, above the heading.
 
 ### Footer
-Continues the contact band in deep petrol (`region`, `on-region`, `on-region-muted`), so every page ends on one block. One row: identity on the left (name, role and tagline, the short presentation `profile.intro`, then the working approach `profile.approach`), GitLab / GitHub / LinkedIn as 40px outlined icon buttons on the right. Bottom row behind a 15% `on-region` rule: copyright and a 36px outlined up-arrow button back to the top (labelled for screen readers). No page or contact lists: the header and the contact band already carry them.
+Continues the contact band in deep petrol (`region`, `on-region`, `on-region-muted`), so every page ends on one block. One row: identity on the left (name, then role and tagline; the pitch stays in the hero, never repeated), LinkedIn / GitLab / GitHub (same order as the hero) as 40px outlined icon buttons on the right. Bottom row behind a 15% `on-region` rule: copyright and a 36px outlined up-arrow button back to the top (labelled for screen readers). No page or contact lists: the header and the contact band already carry them.
 
 ### Contact band
 `ContactCta`, rendered through `Section tone="region"` at the end of every page. "Un projet ensemble ?" in `font-display`, one paragraph (open to new opportunities, work mode, mobility, invitation to write or book, max 52ch), then actions on the band: "M'écrire" (light `on-region` button), "Planifier un échange" (the `BookingDialog` trigger restyled as an outlined `on-region` button, only when Calendly is configured). Focus outlines switch to `on-region` inside it.
