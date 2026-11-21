@@ -5,7 +5,8 @@ import { cacheLife, cacheTag } from "next/cache";
  * GitLab: the public contribution calendar (counts per day, private contributions included
  * when "Include private contributions on my profile" is enabled). With an optional read-only
  * GITLAB_TOKEN, the time of the latest event is read too (timestamp only, nothing else).
- * GitHub: public events of the account, reduced to counts per day.
+ * GitHub: with a GITHUB_TOKEN, the profile's contribution calendar (GraphQL, the same counts as the
+ * graph on github.com) and the time of the latest push; without one, public events as a fallback.
  * Never project names, commit messages or code.
  */
 
@@ -127,17 +128,25 @@ async function loadGitLabLatest(baseUrl: string, hasToken: boolean): Promise<str
   }
 }
 
-type GitHubEvent = { type: string; created_at: string; payload?: { size?: number; distinct_size?: number } };
+type GitHubActivity = { counts: DayCounts; latest: string | null };
+type GitHubEvent = { type: string; created_at: string };
 
 /**
- * GitHub is cached on its own for 5 minutes: without a token the API allows 60 requests per hour,
- * and public side projects do not need minute precision.
+ * GitHub, cached on its own. With a token: the contribution calendar, refreshed every minute
+ * (GraphQL allows 5,000 points per hour). Without one: public events every 5 minutes (60 requests
+ * per hour, often hours late, one count per push). A failure returns null for 30 s.
  */
-async function loadGitHub(username: string): Promise<{ counts: DayCounts; latest: string | null } | null> {
+async function loadGitHub(username: string, hasToken: boolean): Promise<GitHubActivity | null> {
   "use cache";
   cacheTag("code-activity");
+  const token = process.env.GITHUB_TOKEN;
   try {
-    const result = await fetchGitHub(username);
+    if (hasToken && token) {
+      const result = await fetchGitHubCalendar(username, token);
+      cacheLife({ stale: 300, revalidate: LIVE_REFRESH_SECONDS, expire: 60 * 60 * 24 });
+      return result;
+    }
+    const result = await fetchGitHubEvents(username);
     cacheLife({ stale: 300, revalidate: 300, expire: 60 * 60 * 24 });
     return result;
   } catch (error) {
@@ -147,16 +156,58 @@ async function loadGitHub(username: string): Promise<{ counts: DayCounts; latest
   }
 }
 
-async function fetchGitHub(username: string): Promise<{ counts: DayCounts; latest: string | null }> {
-  const headers: Record<string, string> = {
-    Accept: "application/vnd.github+json",
-    "User-Agent": "portfolio-activity",
+type CalendarResponse = {
+  data?: {
+    user: {
+      contributionsCollection: {
+        contributionCalendar: { weeks: { contributionDays: { date: string; contributionCount: number }[] }[] };
+      };
+      repositories: { nodes: { pushedAt: string | null }[] };
+    } | null;
   };
-  if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+  errors?: { message: string }[];
+};
+
+/**
+ * The calendar shown on the GitHub profile: commits, pull requests, issues and reviews per day,
+ * private ones included when the profile shows them. Only commits whose email is linked to the
+ * account count. The push time of the most recently pushed repository gives a precise "last
+ * activity" when it falls on the last day with contributions. No repository name is kept.
+ */
+async function fetchGitHubCalendar(username: string, token: string): Promise<GitHubActivity> {
+  const query = `query($login: String!) {
+    user(login: $login) {
+      contributionsCollection { contributionCalendar { weeks { contributionDays { date contributionCount } } } }
+      repositories(first: 1, ownerAffiliations: [OWNER, COLLABORATOR], orderBy: { field: PUSHED_AT, direction: DESC }) {
+        nodes { pushedAt }
+      }
+    }
+  }`;
+  const res = await fetch("https://api.github.com/graphql", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", "User-Agent": "portfolio-activity" },
+    body: JSON.stringify({ query, variables: { login: username } }),
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  });
+  if (!res.ok) throw new Error(`GitHub GraphQL ${res.status}`);
+  const { data, errors } = (await res.json()) as CalendarResponse;
+  if (errors?.length || !data?.user) throw new Error(`GitHub GraphQL ${errors?.[0]?.message ?? "user not found"}`);
 
   const counts: DayCounts = {};
+  for (const week of data.user.contributionsCollection.contributionCalendar.weeks)
+    for (const day of week.contributionDays) if (day.contributionCount > 0) counts[day.date] = day.contributionCount;
+
+  const lastDay = Object.keys(counts).sort().at(-1) ?? null;
+  const pushedAt = data.user.repositories.nodes[0]?.pushedAt ?? null;
+  const latest = pushedAt && lastDay && pushedAt.slice(0, 10) === lastDay ? pushedAt : lastDay ? `${lastDay}T00:00:00Z` : null;
+  return { counts, latest };
+}
+
+/** Fallback without a token: public events of the last 90 days (300 at most), one count per event. */
+async function fetchGitHubEvents(username: string): Promise<GitHubActivity> {
+  const headers = { Accept: "application/vnd.github+json", "User-Agent": "portfolio-activity" };
+  const counts: DayCounts = {};
   let latest: string | null = null;
-  // The public events API keeps 90 days and at most 300 events (3 pages of 100).
   for (let page = 1; page <= 3; page++) {
     const res = await fetch(
       `https://api.github.com/users/${encodeURIComponent(username)}/events/public?per_page=100&page=${page}`,
@@ -165,9 +216,8 @@ async function fetchGitHub(username: string): Promise<{ counts: DayCounts; lates
     if (!res.ok) throw new Error(`GitHub events ${res.status}`);
     const events = (await res.json()) as GitHubEvent[];
     for (const e of events) {
-      const n = e.type === "PushEvent" ? Math.max(1, e.payload?.distinct_size ?? e.payload?.size ?? 1) : 1;
       const key = e.created_at.slice(0, 10);
-      counts[key] = (counts[key] ?? 0) + n;
+      counts[key] = (counts[key] ?? 0) + 1;
       if (!latest || e.created_at > latest) latest = e.created_at;
     }
     if (events.length < 100) break;
@@ -189,6 +239,7 @@ export async function getCodeActivity(): Promise<CodeActivity | null> {
       process.env.GITLAB_USERNAME || "",
       process.env.GITHUB_USERNAME || "claudemoz",
       Boolean(process.env.GITLAB_TOKEN),
+      Boolean(process.env.GITHUB_TOKEN),
     );
     if (activity) lastGood = activity;
     return activity ?? lastGood;
@@ -202,6 +253,7 @@ async function loadCodeActivity(
   gitlabUser: string,
   githubUser: string,
   hasGitLabToken: boolean,
+  hasGitHubToken: boolean,
 ): Promise<CodeActivity | null> {
   "use cache";
   cacheTag("code-activity");
@@ -209,7 +261,7 @@ async function loadCodeActivity(
   const [events, gitlabLatest, github] = await Promise.all([
     loadGitLabEvents(gitlabUrl, hasGitLabToken),
     loadGitLabLatest(gitlabUrl, hasGitLabToken),
-    loadGitHub(githubUser),
+    loadGitHub(githubUser, hasGitHubToken),
   ]);
   // Authenticated API first; the public calendar (per-IP rate limited) only as a fallback.
   const calendar = events ?? (gitlabUser ? await loadGitLabCalendar(gitlabUrl, gitlabUser) : null);
@@ -241,7 +293,8 @@ async function loadCodeActivity(
   if (github) {
     sources.push("GitHub");
     for (const [day, n] of Object.entries(github.counts)) merged[day] = (merged[day] ?? 0) + n;
-    consider(github.latest, true);
+    // The calendar alone only knows the day: midnight UTC marks a day-only date.
+    if (github.latest) consider(github.latest, !github.latest.endsWith("T00:00:00Z"));
   }
 
   // Grid of ACTIVITY_WEEKS full weeks (Monday to Sunday), the last one containing today.
