@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { DownloadIcon } from "lucide-react";
 import { getBookingConfig, getProfile } from "@/data/profile";
+import { placeholderProps } from "@/data/media";
 import { getDictionary } from "@/lib/dictionaries";
 import { localePath, type Locale } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
@@ -57,6 +58,7 @@ export async function Hero() {
                   fill
                   preload
                   sizes="(min-width: 1024px) 256px, 128px"
+                  {...placeholderProps(profile.photo)}
                   className="object-cover object-top"
                 />
               </div>

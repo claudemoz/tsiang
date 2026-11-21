@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ArchitectureDiagram } from "./architecture-diagram";
 import type { Project, ProjectImage } from "@/data/projects";
 import { isPortrait, projectHost } from "@/data/projects";
+import { placeholderProps } from "@/data/media";
 
 /** Web screenshot shown inside a plain browser window, with the real address when there is one. */
 export function BrowserFrame({
@@ -9,6 +10,7 @@ export function BrowserFrame({
   host,
   sizes,
   crop = false,
+  preload = false,
   className = "",
 }: {
   image: ProjectImage;
@@ -16,6 +18,8 @@ export function BrowserFrame({
   sizes: string;
   /** Crop to a fixed 2:1 window (thumbnails). Otherwise the screenshot keeps its own proportions. */
   crop?: boolean;
+  /** Only for the largest image above the fold (the cover of a project page). */
+  preload?: boolean;
   className?: string;
 }) {
   return (
@@ -30,10 +34,19 @@ export function BrowserFrame({
       </div>
       {crop ? (
         <div className="relative min-h-0 flex-1">
-          <Image src={image.src} alt={image.alt} fill sizes={sizes} className="object-cover object-top" />
+          <Image src={image.src} alt={image.alt} fill sizes={sizes} preload={preload} {...placeholderProps(image)} className="object-cover object-top" />
         </div>
       ) : (
-        <Image src={image.src} alt={image.alt} width={image.width} height={image.height} sizes={sizes} className="h-auto w-full" />
+        <Image
+          src={image.src}
+          alt={image.alt}
+          width={image.width}
+          height={image.height}
+          sizes={sizes}
+          preload={preload}
+          {...placeholderProps(image)}
+          className="h-auto w-full"
+        />
       )}
     </div>
   );
@@ -49,6 +62,7 @@ export function PhoneFrame({ image, sizes, className = "" }: { image: ProjectIma
         width={image.width}
         height={image.height}
         sizes={sizes}
+        {...placeholderProps(image)}
         className="h-auto w-full rounded-[1.1rem]"
       />
     </div>
@@ -90,7 +104,7 @@ export function ProjectThumb({
       <div className="flex aspect-[16/10] items-center justify-center gap-[4%] overflow-hidden rounded-xl bg-primary-soft">
         {phones.map((image) => (
           <div key={image.src} className="relative h-[84%] aspect-[9/19.5] overflow-hidden rounded-[0.9rem] border-[3px] border-device bg-device">
-            <Image src={image.src} alt={image.alt} fill sizes="120px" className="object-cover object-top" />
+            <Image src={image.src} alt={image.alt} fill sizes="120px" {...placeholderProps(image)} className="object-cover object-top" />
           </div>
         ))}
       </div>

@@ -35,6 +35,7 @@ Next.js 16.4 (App Router, `cacheComponents: true`, Turbopack), React 19, Tailwin
 - `components/project-media.tsx`: `BrowserFrame`, `PhoneFrame`, `PhoneRow`, `ProjectThumb`.
 - Client components: `project-filter.tsx`, `site-nav.tsx` (active section), `relative-time.tsx` (minute clock via `useSyncExternalStore`) and `live-code-activity.tsx` (live calendar). Server components cannot import values from a `"use client"` module: shared data lives in `data/` (e.g. `data/navigation.ts`). Keep everything else a Server Component; anything using `usePathname` in the layout must sit inside `Suspense`.
 - `public/images/` (projects, certifications, profile, all WebP) and `public/cv/`.
+- Images live on Cloudinary (URLs in `data/`, resized by `lib/image-loader.ts`). After adding or replacing one, run `npm run placeholders` to regenerate its blurred preview in `data/placeholders.ts`.
 
 ## Design rules (from DESIGN.md)
 

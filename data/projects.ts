@@ -1,15 +1,10 @@
 import type { Locale } from "@/lib/i18n";
 import { projectsEn } from "./en";
-import { imageSrc } from "./media";
+import { imageSrc, type MediaImage } from "./media";
 
 export type ProjectCategory = "Web" | "Mobile" | "API";
 
-export type ProjectImage = {
-  src: string;
-  width: number;
-  height: number;
-  alt: string;
-};
+export type ProjectImage = MediaImage & { alt: string };
 
 export type ProjectLink = { label: string; href: string };
 

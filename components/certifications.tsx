@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ArrowUpRightIcon, BadgeCheckIcon, ExpandIcon } from "lucide-react";
 import { CERTIFIER, certifications } from "@/data/certifications";
+import { placeholderProps } from "@/data/media";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { buttonVariants } from "@/components/ui/button";
 import { getDictionary } from "@/lib/dictionaries";
@@ -29,6 +30,7 @@ export async function Certifications() {
                     alt={t.certificate(c.title, CERTIFIER)}
                     fill
                     sizes="(min-width: 768px) 200px, 50vw"
+                    {...placeholderProps(c.image)}
                     className="object-cover"
                   />
                   <span
@@ -57,6 +59,7 @@ export async function Certifications() {
                     height={c.image.height}
                     alt={t.certificate(c.title, CERTIFIER)}
                     sizes="(min-width: 768px) 720px, 100vw"
+                    {...placeholderProps(c.image)}
                     className="h-auto w-full rounded-md border border-border bg-card shadow-sm"
                   />
                 </div>

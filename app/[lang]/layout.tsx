@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Sans, Space_Grotesk } from "next/font/google";
+import { preconnect } from "react-dom";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getProfile, profile } from "@/data/profile";
@@ -79,6 +80,9 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
     sameAs: [p.gitlab, p.github, p.linkedin],
     knowsAbout: ["React", "React Native", "Angular", "Vue.js", "Node.js", "Go", "Spring Boot", "Docker", "Kubernetes"],
   };
+
+  // Every image comes from the Cloudinary CDN: open the connection before the first <img> is parsed.
+  preconnect("https://res.cloudinary.com");
 
   return (
     <html lang={htmlLang[lang]} className={cn("h-full font-sans", heading.variable, body.variable)}>

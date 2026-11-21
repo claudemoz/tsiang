@@ -92,7 +92,7 @@ export default async function ProjectPage(props: PageProps<"/[lang]/projets/[slu
 
           <div className="mt-10">
             {cover ? (
-              <BrowserFrame image={cover} host={host} sizes="(min-width: 1152px) 1088px, 100vw" />
+              <BrowserFrame image={cover} host={host} sizes="(min-width: 1152px) 1088px, 100vw" preload />
             ) : mobile.length > 0 ? (
               <PhoneRow images={mobile} sizes="(min-width: 640px) 230px, 30vw" />
             ) : project.architecture ? (
