@@ -111,6 +111,7 @@ export const experiences: Experience[] = [
       "Développement d'API REST et de serveurs MCP, avec intégration des API des opérateurs Mobile Money",
       "Rédaction de la documentation technique et des guides d'intégration, déploiement automatisé avec des pipelines CI/CD",
       "Migration de Java et Angular vers Node.js et Vue 3 avec Nuxt",
+      "Conception d'un assistant RAG avec Claude Haiku : recherche FULLTEXT MySQL, citation des sources, protection contre l'injection de prompt, tests Playwright en CI",
     ],
     stack: [
       "Vue 3",
