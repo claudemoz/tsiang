@@ -116,7 +116,14 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+}
+
+/* Anchor targets (#projets, #demos…) stop below the sticky header. This is a scroll-margin on the
+   targets, not a scroll-padding on <html>: Next reads html scroll-padding to decide whether the
+   top of a new page is visible, and with 5rem the hero (64px down, under the header) counted as
+   hidden, so navigating home from the top of another page scrolled down to the projects. */
+[id] {
+  scroll-margin-top: 5rem;
 }
 
 body {

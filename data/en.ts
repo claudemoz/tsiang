@@ -330,10 +330,9 @@ export const labNotesEn: Record<
   {
     title: string;
     project: string;
-    status: string;
+    status?: string;
     summary: string;
     proves: string[];
-    platform?: string[];
     context: string[];
     built?: string[];
     sections?: { title: string; items: string[] }[];
@@ -352,11 +351,6 @@ export const labNotesEn: Record<
       "Linux administration: systemd, apt and dnf, iptables",
       "Secure delivery: HTTPS and SHA-256 checksums",
       "Automating the rollout of a fleet of servers",
-    ],
-    platform: [
-      "Distributed VPN architecture: a central Go API drives remote agents over gRPC, one per WireGuard VPN server.",
-      "Server installation automated through Linux packages (.deb/.rpm), with TLS/HMAC authentication, automatic service startup and synchronization of VPN configurations.",
-      "Multi-tenancy, access management, automatic IP assignment, IPv6 and DNS filtering.",
     ],
     context: [
       "I'm building a VPN platform based on WireGuard. Each VPN server runs an agent that manages the WireGuard interface on behalf of the API.",
@@ -429,4 +423,208 @@ export const labNotesEn: Record<
       "The same CI builds the agent for amd64 and arm64.",
     ],
   },
+  "rag-sans-base-vectorielle": {
+    "title": "A lean RAG, without a vector database",
+    "project": "OPENPAY's AI assistant",
+    "summary": "To answer customers from 66 articles, a MySQL FULLTEXT index is enough: no vector database. Claude Haiku writes, and the code keeps control of prices and links.",
+    "proves": [
+      "Designing a RAG end to end, from retrieval to generation",
+      "Choosing the simplest architecture that does the job, and owning it",
+      "Integrating an LLM with the Anthropic SDK, streaming over SSE",
+      "Keeping facts in code: live prices, links from a closed list"
+    ],
+    "context": [
+      "OPENPAY lets Congolese merchants collect Mobile Money payments. The same questions kept coming back: how much does a withdrawal cost, where is my API key, can I open an account without a company, why doesn't my callback arrive.",
+      "They came by email or WhatsApp, at any hour, from three audiences: visitors discovering the service, merchants in the middle of an integration, and admins. The goal: an immediate, accurate and verifiable answer, on every page of the site, with no risk of the AI making up a price or a procedure."
+    ],
+    "built": [
+      "An \"Ask me a question\" button opens a chat. Each answer is written by Claude only from a knowledge base managed by the team.",
+      "Retrieval: the 5 most relevant articles are found by a MySQL FULLTEXT index.",
+      "Augmented: those articles, the current prices and the last 10 messages are injected into the prompt.",
+      "Generation: Claude Haiku writes a short answer, in French, never stepping outside that context."
+    ],
+    "sections": [
+      {
+        "title": "No vector database, on purpose",
+        "items": [
+          "The RAG reflex is embeddings and a vector database. For a base of 66 articles, that was oversized: one more service to host, a sync to maintain and an extra cost.",
+          "I used MySQL's FULLTEXT index, already in the stack: the query returns the 5 published articles with the best relevance score.",
+          "The trade-off I accept: FULLTEXT does not understand meaning and does not handle word variants (\"remboursé\" does not find \"remboursement\"). I made up for it in the content: each article ends with a Keywords line that repeats the customers' real wording.",
+          "Semantic search remains a possible next step, to trigger when the admin data shows it is needed."
+        ]
+      },
+      {
+        "title": "The smallest model that does the job",
+        "items": [
+          "Claude Haiku 5.5, with a low reasoning effort and at most 2,048 output tokens.",
+          "The task is to rephrase a given context, not to reason about an open problem. The result: answers in a few seconds and a minimal cost per question."
+        ]
+      },
+      {
+        "title": "Prices are never written in the articles",
+        "items": [
+          "The price of the API subscription is set by the admin and can change at any time. Written in an article, the assistant would end up quoting an old price.",
+          "For each question, the backend reads the current configuration (with a 30 s cache) and injects it into a <tarifs_en_vigueur> block, which overrides the articles. One source of truth, shared with the site's Pricing page."
+        ]
+      },
+      {
+        "title": "Links, but from a closed list",
+        "items": [
+          "The assistant can offer buttons, such as \"Go to API key\" or \"Documentation: payment links\". But it never outputs a URL: it ends its answer with a marker like [[lien:cle-api]].",
+          "The backend replaces it with a page from a closed list of 17 destinations, and ignores any unknown key. A hallucination cannot turn into a broken or malicious link."
+        ]
+      },
+      {
+        "title": "Streaming",
+        "items": [
+          "Answers appear as they are written, through Server-Sent Events over a POST, with fetch and a ReadableStream in the browser.",
+          "A link marker can arrive split across two chunks. A visibleText function holds back any incomplete marker: the displayed text only grows, it never flickers or rewrites itself. A unit test checks it.",
+          "If the customer closes the chat during generation, an AbortController tied to res.on(\"close\") cancels the model call, so nobody pays for an answer no one will read.",
+          "Behind nginx, the X-Accel-Buffering: no header keeps the proxy from holding the stream back."
+        ]
+      },
+      {
+        "title": "Next steps",
+        "items": [
+          "Hybrid search (FULLTEXT and embeddings) if the share of questions without an article plateaus.",
+          "Removing French stop words before searching.",
+          "A shared limiter through Redis when running several instances.",
+          "Turning tokens into real cost in the dashboard."
+        ]
+      }
+    ],
+    "outcomes": [
+      "Restraint is an architecture choice: a well-fed FULLTEXT index beats a poorly fed vector database.",
+      "The model writes, the code decides: prices, links, access rights and limits are set by the backend."
+    ]
+  },
+  "securiser-une-ia-publique": {
+    "title": "Securing a public AI",
+    "project": "OPENPAY's AI assistant",
+    "summary": "An assistant open to visitors is an attack surface. Each risk has its countermeasure, and the model has no power to act: it only writes text.",
+    "proves": [
+      "Securing a public AI: prompt injection, XSS, social engineering",
+      "Cleaning and escaping input, parameterized SQL queries",
+      "Rate limiting per account and per IP",
+      "Reading an API's contract and fixing an existing bug"
+    ],
+    "context": [
+      "The chat is public: any visitor can write in it. A public AI is secured like a public form, plus prompt injection."
+    ],
+    "sections": [
+      {
+        "title": "Risks and countermeasures",
+        "items": [
+          "Prompt injection (\"ignore your instructions\"): the question and the articles are escaped (< becomes &lt;) before going between tags. There is no way to close <question> or open a fake <system> block. The prompt treats the question as data, never as an instruction.",
+          "Hidden text: Unicode NFKC normalization, and removal of invisible characters (zero width, direction overrides) and control characters.",
+          "SQL injection: bound parameters only. I don't filter words like SELECT or DROP: that would block legitimate questions without protecting anything more. An integration test sends an injection attempt and checks that nothing moves.",
+          "XSS through an answer: rendered as plain text, never v-html.",
+          "Hallucinated price or procedure: the prompt forbids making up fees, delays or endpoints. Missing information points to the contact page.",
+          "Social engineering: the assistant never asks for a password, PIN, OTP or API key. It cannot take any action: it only writes text.",
+          "Abuse and cost: 20 questions per 10 minutes for an account, 40 per 10 minutes per IP for visitors."
+        ]
+      },
+      {
+        "title": "The limiter story",
+        "items": [
+          "While counting visitors per IP, I found a bug that already existed in the application. With express-rate-limit v8, ipKeyGenerator expects an IP address. The code was passing it the whole request.",
+          "The limiting key was therefore \"[object Object]\" for everyone: one global counter instead of one per client.",
+          "The fix is one line, but it also affected the limit on authentication emails. A good reminder: read an API's contract rather than guess its signature."
+        ]
+      }
+    ],
+    "outcomes": [
+      "A public AI is secured like a public form, plus prompt injection: cleaning, escaping, rate limits, and no power to act.",
+      "The per-IP limit is covered by an integration test: the 41st request gets a 429."
+    ]
+  },
+  "piloter-un-assistant-ia": {
+    "title": "Sounding like an advisor, and steering the assistant",
+    "project": "OPENPAY's AI assistant",
+    "summary": "With a small model, where an instruction sits matters as much as how it is worded. And a RAG is only as good as its knowledge base: the admin interface is there to grow it.",
+    "proves": [
+      "Writing a prompt that holds with a small model",
+      "Measuring and steering an AI product: feedback, tokens, unanswered questions",
+      "Testing an AI product without calling the real model",
+      "Caring for the experience: performance, accessibility, continuity"
+    ],
+    "context": [
+      "The first answers started with \"According to the articles in our base\". Technically accurate, but it sounds like a robot. Forbidding those words in the system prompt was not enough: a small model follows an instruction less well when it sits far from the text it is working on."
+    ],
+    "sections": [
+      {
+        "title": "What worked for the tone",
+        "items": [
+          "A section dedicated to tone, with a list of forbidden words (article, document, source, base) and examples to avoid and correct ones.",
+          "A short reminder placed right after the question, in the last user message. It also undoes the effect of older, badly worded answers still in the history."
+        ]
+      },
+      {
+        "title": "The improvement loop",
+        "items": [
+          "Conversations: volume, satisfaction rate based on customers' positive and negative feedback, share of questions without an article, and tokens actually used, read from response.usage and stored for each answer. Each conversation opens in detail with the articles used, the links offered and the cost.",
+          "Without an article: the questions for which the search found nothing. That is the list of articles to write. One click opens the editor with the question already as the title.",
+          "Articles: managing the base (creation, publishing, categories)."
+        ]
+      },
+      {
+        "title": "Details that make the experience",
+        "items": [
+          "An invitation, not just an icon: \"Ask me a question, online, instant answer\". A welcome card offers 3 questions suited to the page, different on the public site and in the merchant area.",
+          "The chat is loaded on demand, and preloaded when the browser is idle or on hovering the button: it weighs nothing on first paint.",
+          "A visitor gets an anonymous identifier. When they sign in, their conversations move to their account automatically.",
+          "prefers-reduced-motion respected, feedback buttons with aria-pressed, accessible names on panels, keyboard navigation.",
+          "The button is hidden on the payment page, so as not to distract at the moment of paying."
+        ]
+      },
+      {
+        "title": "Quality and tests",
+        "items": [
+          "Unit (node:test): anti-injection cleaning, link extraction, streaming text filtering, model refusal cases, live prices.",
+          "Integration (Supertest and a throwaway MySQL 8 in Docker): FULLTEXT search, conversation ownership, SSE stream, feedback, linking on sign-in, per-IP limit, admin statistics, SQL injection attempt.",
+          "End to end (Playwright, with a fake backend able to emit SSE): visible streaming, links, feedback, resuming a conversation, errors and 429, welcome card, payment page, admin screens.",
+          "No test calls the real model: the SDK is mocked, which makes the suite fast, deterministic and free in CI."
+        ]
+      }
+    ],
+    "outcomes": [
+      "The backend suite (116 unit tests, 74 integration tests) passes in full with the assistant, and 10 e2e scenarios are dedicated to it.",
+      "Without measurement, no steering: tokens, feedback and unanswered questions turn a chatbot into a product you can improve week after week."
+    ]
+  },
 };
+
+/** English text of the labs (data/lab.ts), keyed by slug. */
+export const labsEn: Record<string, { title: string; status?: string; summary: string; platformTitle?: string; platform: string[] }> = {
+  "plateforme-vpn": {
+    title: "Multi-server VPN platform",
+    status: "In development",
+    summary: "Multi-server VPN platform built on WireGuard: a central Go API drives an agent on every VPN server.",
+    platform: [
+      "Distributed VPN architecture: a central Go API drives remote agents over gRPC, one per WireGuard VPN server.",
+      "Server installation automated through Linux packages (.deb/.rpm), with TLS/HMAC authentication, automatic service startup and synchronization of VPN configurations.",
+      "Multi-tenancy, access management, automatic IP assignment, IPv6 and DNS filtering.",
+    ],
+  },
+  "assistant-ia-openpay": {
+    "title": "OPENPAY's AI assistant",
+    "summary": "An assistant that answers OPENPAY's customers on every page of the site. Each answer is written by Claude only from a knowledge base managed by the team, and prices are read live from the configuration.",
+    "platformTitle": "The architecture",
+    "platform": [
+      "Browser (Nuxt): a floating button opens the chat, which sends the question to the API with POST /ask/stream and receives the answer as Server-Sent Events.",
+      "API (Express): identification (JWT or visitor), cleaning and validation of the question, rate limiting per account or per IP.",
+      "Retrieval: the 5 most relevant articles are found by a MySQL FULLTEXT index, along with the current prices.",
+      "Augmented: those articles, the current prices and the last 10 messages are injected into the prompt.",
+      "Generation: Claude Haiku writes a short answer, in French, never stepping outside that context. The answer is stored with its tokens and its links.",
+      "Admin: the articles, the conversations and the questions left without an article."
+    ]
+  },
+};
+
+/** English labels of the lab categories (data/lab.ts). */
+export const labCategoriesEn = {
+  "reseau-securite": "Networking and security",
+  "devops-cloud": "DevOps and cloud",
+  "backend-api": "Backend and APIs",
+  ia: "AI",
+} as const;

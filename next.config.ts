@@ -20,6 +20,14 @@ const nextConfig: NextConfig = {
     loader: "custom",
     loaderFile: "./lib/image-loader.ts",
   },
+  // Notes used to live at /lab/<note>; they now sit inside their lab, /lab/<lab>/<note>.
+  async redirects() {
+    const moved = "agent-vpn-paquet-linux|go-grpc-plateforme-vpn";
+    return [
+      { source: `/lab/:note(${moved})`, destination: "/lab/plateforme-vpn/:note", permanent: true },
+      { source: `/en/lab/:note(${moved})`, destination: "/en/lab/plateforme-vpn/:note", permanent: true },
+    ];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

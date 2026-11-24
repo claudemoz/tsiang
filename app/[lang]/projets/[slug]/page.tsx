@@ -7,7 +7,7 @@ import { alternatesFor, hasLocale, localePath, type Locale } from "@/lib/i18n";
 import { diagramCaption } from "@/components/featured-projects";
 import { BrowserFrame, PhoneRow } from "@/components/project-media";
 import { ArchitectureDiagram } from "@/components/architecture-diagram";
-import { getLabNotesForProject } from "@/data/lab";
+import { getLabNotesForProject, notePath } from "@/data/lab";
 import { certificationForStack } from "@/data/certifications";
 import { CertifiedMark } from "@/components/certified-mark";
 import { ContactCta } from "@/components/contact-cta";
@@ -120,7 +120,7 @@ export default async function ProjectPage(props: PageProps<"/[lang]/projets/[slu
             {labNotes.length === 1 ? (
               <p className="mt-8 text-[15px]">
                 <span className="text-muted-foreground">{t.project.labNote}</span>
-                <Link href={localePath(lang, `/lab/${labNotes[0].slug}`)} className={textLink}>
+                <Link href={notePath(lang, labNotes[0])} className={textLink}>
                   {labNotes[0].title}
                 </Link>
               </p>
@@ -130,7 +130,7 @@ export default async function ProjectPage(props: PageProps<"/[lang]/projets/[slu
                 <ul className="mt-2 space-y-1.5">
                   {labNotes.map((n) => (
                     <li key={n.slug}>
-                      <Link href={localePath(lang, `/lab/${n.slug}`)} className={textLink}>
+                      <Link href={notePath(lang, n)} className={textLink}>
                         {n.title}
                       </Link>
                     </li>

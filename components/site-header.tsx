@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { Suspense } from "react";
 import { labItem, navItems } from "@/data/navigation";
 import { getProfile } from "@/data/profile";
 import { getDictionary } from "@/lib/dictionaries";
 import { localePath } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
+import { HomeLink } from "./home-link";
 import { LabLink, LabLinkFallback } from "./lab-link";
 import { LanguageSwitch, LanguageSwitchFallback } from "./language-switch";
 import { MobileNav } from "./mobile-nav";
@@ -26,14 +26,14 @@ export async function SiteHeader() {
   return (
     <header className="site-header sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-md">
       <Container className="flex h-16 items-center justify-between gap-4">
-        <Link href={localePath(lang, "/")} className="rounded-md" aria-label={`${t.a11y.home}, ${profile.name}`}>
+        <HomeLink href={localePath(lang, "/")} className="rounded-md" aria-label={`${t.a11y.home}, ${profile.name}`}>
           <span className="flex flex-col leading-tight">
             <span className="font-display text-brand font-semibold tracking-tight">{profile.name}</span>
             <span className="hidden text-caption text-muted-foreground sm:block md:hidden lg:block">
               {profile.role} {profile.tagline}
             </span>
           </span>
-        </Link>
+        </HomeLink>
 
         <nav aria-label={t.a11y.mainNav} className="hidden md:block">
           <Suspense fallback={<SiteNavFallback items={items} />}>

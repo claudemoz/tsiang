@@ -1,11 +1,11 @@
-import Link from "next/link";
+import type { ReactNode } from "react";
 import { CheckIcon } from "lucide-react";
-import type { LabNote } from "@/data/lab";
+import type { Lab, LabNote } from "@/data/lab";
 import { getProject } from "@/data/projects";
 import { ArchitectureDiagram } from "@/components/architecture-diagram";
 import { diagramCaption } from "@/components/featured-projects";
 import type { Dictionary } from "@/lib/dictionaries";
-import { localePath, type Locale } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n";
 
 const h2Class = "mt-12 font-display text-2xl font-semibold tracking-tight";
 
@@ -35,21 +35,38 @@ function HairlineList({ items }: { items: string[] }) {
   );
 }
 
-/** A whole note on its own page: margin column (project, title, what it shows, status, stack), then the reading column. */
-export function LabNoteArticle({ note, lang, t }: { note: LabNote; lang: Locale; t: Dictionary }) {
-  const project = note.projectSlug ? getProject(note.projectSlug, lang) : undefined;
+/**
+ * "La plateforme" of a lab: the architecture diagram of its project, then what the platform does.
+ * Shown once, on the lab page, so each note can go straight to its problem.
+ */
+export function LabPlatform({ lab, lang }: { lab: Lab; lang: Locale }) {
+  const project = lab.projectSlug ? getProject(lab.projectSlug, lang) : undefined;
   return (
-    <article aria-labelledby="note-titre" className="grid gap-10 pt-8 pb-12 lg:grid-cols-12 lg:gap-12">
+    <>
+      {project?.architecture ? (
+        <ArchitectureDiagram architecture={project.architecture} caption={diagramCaption(project, lang)} />
+      ) : null}
+      <HairlineList items={lab.platform} />
+    </>
+  );
+}
+
+/** A whole note on its own page: margin column (title, what it shows, status, stack), then the reading column. */
+export function LabNoteArticle({
+  note,
+  t,
+  aside,
+}: {
+  note: LabNote;
+  t: Dictionary;
+  /** Closes the sticky margin column (the link to the note's demos). */
+  aside?: ReactNode;
+}) {
+  return (
+    <article aria-labelledby="note-titre" className="grid grid-cols-[minmax(0,1fr)] gap-10 pt-8 pb-12 lg:grid-cols-12 lg:gap-12">
       <aside className="lg:col-span-4">
         <div className="lg:sticky lg:top-24">
-          {note.projectSlug ? (
-            <Link href={localePath(lang, `/projets/${note.projectSlug}`)} className={`text-[15px] text-primary hover:text-foreground`}>
-              {note.project}
-            </Link>
-          ) : (
-            <p className="text-[15px] text-primary">{note.project}</p>
-          )}
-          <h1 id="note-titre" className="mt-2 font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+          <h1 id="note-titre" className="font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
             {note.title}
           </h1>
 
@@ -57,30 +74,23 @@ export function LabNoteArticle({ note, lang, t }: { note: LabNote; lang: Locale;
           <ProvesList items={note.proves} className="mt-3 text-[15px] font-medium" />
 
           <dl className="mt-8 space-y-4 border-t border-border pt-6 text-[15px]">
-            <div>
-              <dt className="text-muted-foreground">{t.lab.status}</dt>
-              <dd className="mt-0.5 font-medium">{note.status}</dd>
-            </div>
+            {note.status ? (
+              <div>
+                <dt className="text-muted-foreground">{t.lab.status}</dt>
+                <dd className="mt-0.5 font-medium">{note.status}</dd>
+              </div>
+            ) : null}
             <div>
               <dt className="text-muted-foreground">{t.lab.technologies}</dt>
               <dd className="mt-0.5">{note.stack.join(", ")}</dd>
             </div>
           </dl>
+          {aside}
         </div>
       </aside>
 
-      <div className="max-w-[68ch] lg:col-span-8">
+      <div className="min-w-0 max-w-[68ch] lg:col-span-8">
         <p className="text-xl leading-relaxed text-pretty">{note.summary}</p>
-
-        {note.platform ? (
-          <>
-            <h2 className={h2Class}>{t.lab.platform}</h2>
-            {project?.architecture ? (
-              <ArchitectureDiagram architecture={project.architecture} caption={diagramCaption(project, lang)} className="mt-5" />
-            ) : null}
-            <HairlineList items={note.platform} />
-          </>
-        ) : null}
 
         <h2 className={h2Class}>{t.lab.context}</h2>
         {note.context.map((p) => (

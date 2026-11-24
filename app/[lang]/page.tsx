@@ -13,7 +13,7 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      <Section id="projets" title={t.nav.projets} intro={t.home.projectsIntro} wide>
+      <Section id="projets" title={t.nav.projets} wide>
         <FeaturedProjects />
       </Section>
       <Section id="experience" title={t.nav.experience} intro={t.home.experienceIntro}>

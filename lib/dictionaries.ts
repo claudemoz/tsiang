@@ -1,4 +1,5 @@
 import type { Locale } from "./i18n";
+import { labDemoStrings } from "./lab-demo-strings";
 
 /**
  * Interface strings. French is the reference (the site was written in French first); English
@@ -12,7 +13,7 @@ const fr = {
     projectsDescription: "Tous les projets web, mobile et API réalisés par Claude Tsiangana, développeur fullstack.",
     labTitle: "Lab",
     labDescription:
-      "Notes techniques sur mes projets personnels : le problème, la solution mise en place et ce qu'elle change.",
+      "Mon banc d'essai de développeur : des projets personnels explorés en profondeur, avec notes techniques et démos qui tournent dans le navigateur.",
     notFoundTitle: "Page introuvable",
     projectNoteAlt: "Fiche projet de Claude Tsiangana",
   },
@@ -149,7 +150,7 @@ const fr = {
   lab: {
     title: "Lab",
     introBefore:
-      "Des notes techniques sur mes projets personnels. Chaque note isole un problème ou un choix précis : le contexte, ce que j'ai décidé et pourquoi, et ce que ça change. Les projets complets sont dans la page",
+      "Mon banc d'essai. Chaque lab explore un projet personnel en profondeur : des notes techniques sur les choix que j'ai faits, et des démos à manipuler dans votre navigateur. Les projets complets sont dans la page",
     introLink: "Projets",
     status: "Statut",
     technologies: "Technologies",
@@ -162,7 +163,22 @@ const fr = {
     readNote: "Lire la note",
     allNotes: "Toutes les notes du Lab",
     otherNotes: "Autres notes",
+    breadcrumb: "Fil d'Ariane",
+    category: "Catégorie",
+    filterAria: "Filtrer les labs par catégorie",
+    filterShown: "labs affichés",
+    filterEmpty: "Aucun lab dans cette catégorie pour l'instant.",
+    openLab: "Ouvrir le lab",
+    noteOne: "note technique",
+    noteMany: "notes techniques",
+    project: "Projet",
+    projectPage: "Voir la fiche du projet",
+    notesTitle: "Les notes",
+    notesIntro: "Chaque note isole un problème ou un choix précis : le contexte, ce que j'ai décidé et pourquoi.",
+    demosIntro: "Chaque démo a sa page : un schéma expliqué, puis la démo à manipuler dans votre navigateur. Rien ne peut casser.",
+    otherNotesOfLab: "Autres notes de ce lab",
   },
+  labDemos: labDemoStrings.fr,
   notFound: {
     heading: "Cette page n'existe pas.",
     body: "Ce lien ne mène à aucune page du site (erreur 404). Les projets et le CV sont accessibles depuis l'accueil.",
@@ -183,7 +199,7 @@ const en: Dictionary = {
     projectsTitle: "Projects",
     projectsDescription: "All the web, mobile and API projects built by Claude Tsiangana, fullstack developer.",
     labTitle: "Lab",
-    labDescription: "Technical notes on my personal projects: the problem, the solution I built and what it changes.",
+    labDescription: "My developer test bench: personal projects explored in depth, with technical notes and demos that run in the browser.",
     notFoundTitle: "Page not found",
     projectNoteAlt: "Project page by Claude Tsiangana",
   },
@@ -318,7 +334,7 @@ const en: Dictionary = {
   lab: {
     title: "Lab",
     introBefore:
-      "Technical notes on my personal projects. Each note isolates one specific problem or choice: the context, what I decided and why, and what it changes. Complete projects are on the",
+      "My test bench. Each lab explores one personal project in depth: technical notes on the choices I made, and demos to play with in your browser. Complete projects are on the",
     introLink: "Projects page",
     status: "Status",
     technologies: "Technologies",
@@ -331,7 +347,22 @@ const en: Dictionary = {
     readNote: "Read the note",
     allNotes: "All Lab notes",
     otherNotes: "Other notes",
+    breadcrumb: "Breadcrumb",
+    category: "Category",
+    filterAria: "Filter labs by category",
+    filterShown: "labs shown",
+    filterEmpty: "No lab in this category yet.",
+    openLab: "Open the lab",
+    noteOne: "technical note",
+    noteMany: "technical notes",
+    project: "Project",
+    projectPage: "See the project page",
+    notesTitle: "The notes",
+    notesIntro: "Each note isolates one specific problem or choice: the context, what I decided and why.",
+    demosIntro: "Each demo has its own page: an explained diagram, then the demo to play with in your browser. Nothing can break.",
+    otherNotesOfLab: "Other notes in this lab",
   },
+  labDemos: labDemoStrings.en,
   notFound: {
     heading: "This page does not exist.",
     body: "This link does not lead to any page of the site (404 error). The projects and the resume are available from the home page.",

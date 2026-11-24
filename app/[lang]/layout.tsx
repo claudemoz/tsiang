@@ -85,7 +85,12 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   preconnect("https://res.cloudinary.com");
 
   return (
-    <html lang={htmlLang[lang]} className={cn("h-full font-sans", heading.variable, body.variable)}>
+    // data-scroll-behavior: Next 16 only turns smooth scrolling off during route changes when asked to.
+    <html
+      lang={htmlLang[lang]}
+      data-scroll-behavior="smooth"
+      className={cn("h-full font-sans", heading.variable, body.variable)}
+    >
       <body className="flex min-h-full flex-col">
         <a
           href="#contenu"

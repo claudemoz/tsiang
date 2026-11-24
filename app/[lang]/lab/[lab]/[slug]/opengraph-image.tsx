@@ -1,5 +1,7 @@
 import { ImageResponse } from "next/og";
-import { getLabNote, labNotes } from "@/data/lab";
+import { getLab, getLabNote, labNotes } from "@/data/lab";
+import { getLabDemo, labDemos } from "@/data/lab-demos";
+import { getDictionary } from "@/lib/dictionaries";
 import { getProfile } from "@/data/profile";
 import { hasLocale } from "@/lib/i18n";
 
@@ -8,15 +10,23 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export function generateStaticParams() {
-  return labNotes.map((n) => ({ slug: n.slug }));
+  return [
+    ...labNotes.map((n) => ({ lab: n.lab, slug: n.slug })),
+    ...labDemos.map((d) => ({ lab: d.lab, slug: d.id })),
+  ];
 }
 
-/** Share card for one Lab note: title, summary, then the project and a console-style "Lab" tag. */
-export default async function LabNoteOgImage({ params }: { params: Promise<{ slug: string; lang: string }> }) {
-  const { slug, lang: raw } = await params;
+/** Share card for a note or a demo of a lab: title, summary, then the lab and a console-style "Lab" tag. */
+export default async function LabItemOgImage({ params }: { params: Promise<{ lab: string; slug: string; lang: string }> }) {
+  const { lab: labSlug, slug, lang: raw } = await params;
   const lang = hasLocale(raw) ? raw : "fr";
   const profile = getProfile(lang);
+  const lab = getLab(labSlug, lang);
   const note = getLabNote(slug, lang);
+  const demo = note ? undefined : getLabDemo(slug);
+  const demoText = demo ? getDictionary(lang).labDemos[demo.kind] : undefined;
+  const title = note?.title ?? demoText?.title ?? "";
+  const summary = note?.summary ?? demoText?.plain ?? "";
 
   return new ImageResponse(
     (
@@ -53,14 +63,14 @@ export default async function LabNoteOgImage({ params }: { params: Promise<{ slu
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", fontSize: 76, fontWeight: 700, letterSpacing: -2, lineHeight: 1.05, maxWidth: 1040 }}>
-            {note?.title ?? ""}
+            {title}
           </div>
           <div style={{ display: "flex", fontSize: 34, marginTop: 28, maxWidth: 1000, lineHeight: 1.3 }}>
-            {note?.summary ?? ""}
+            {summary}
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", fontSize: 28, color: "#0e6377" }}>{note?.project ?? ""}</div>
+          <div style={{ display: "flex", fontSize: 28, color: "#0e6377" }}>{lab?.title ?? ""}</div>
           <div style={{ display: "flex", height: 10, width: 160, background: "#0e6377", borderRadius: 5 }} />
         </div>
       </div>
