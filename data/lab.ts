@@ -55,11 +55,11 @@ export const labs: Lab[] = [
   },
   {
     slug: "assistant-ia-openpay",
-    title: "Assistant IA d'OPENPAY",
+    title: "Assistant IA d'OPENPAY : un RAG sobre",
     category: "ia",
     projectSlug: "openpay",
-    summary: "Un assistant qui répond aux clients d'OPENPAY sur chaque page du site. Chaque réponse est rédigée par Claude uniquement à partir d'une base de connaissances gérée par l'équipe, et les tarifs sont lus en direct dans la configuration.",
-    platformTitle: "L'architecture",
+    summary: "Un RAG (Retrieval-Augmented Generation, ou génération augmentée par la recherche) : à chaque question, l'assistant retrouve les articles pertinents de la base de connaissances, puis Claude rédige la réponse uniquement à partir d'eux. Il répond aux clients d'OPENPAY sur chaque page du site, et les tarifs sont lus en direct dans la configuration.",
+    platformTitle: "L'architecture RAG",
     platform: [
       "Navigateur (Nuxt) : un bouton flottant ouvre le chat, qui envoie la question à l'API en POST /ask/stream et reçoit la réponse en Server-Sent Events.",
       "API (Express) : identification (JWT ou visiteur), nettoyage et validation de la question, limite de débit par compte ou par IP.",

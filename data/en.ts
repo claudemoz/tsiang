@@ -607,9 +607,9 @@ export const labsEn: Record<string, { title: string; status?: string; summary: s
     ],
   },
   "assistant-ia-openpay": {
-    "title": "OPENPAY's AI assistant",
-    "summary": "An assistant that answers OPENPAY's customers on every page of the site. Each answer is written by Claude only from a knowledge base managed by the team, and prices are read live from the configuration.",
-    "platformTitle": "The architecture",
+    "title": "OPENPAY's AI assistant: a lean RAG",
+    "summary": "A RAG (Retrieval-Augmented Generation): for each question, the assistant retrieves the relevant articles from the knowledge base, then Claude writes the answer only from them. It answers OPENPAY's customers on every page of the site, and prices are read live from the configuration.",
+    "platformTitle": "The RAG architecture",
     "platform": [
       "Browser (Nuxt): a floating button opens the chat, which sends the question to the API with POST /ask/stream and receives the answer as Server-Sent Events.",
       "API (Express): identification (JWT or visitor), cleaning and validation of the question, rate limiting per account or per IP.",
